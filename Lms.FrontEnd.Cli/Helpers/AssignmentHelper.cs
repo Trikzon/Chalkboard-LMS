@@ -1,8 +1,8 @@
-using COP4870_LMS.CLI;
-using COP4870_LMS.Models;
-using COP4870_LMS.Services;
+using Lms.FrontEnd.Cli.CLI;
+using Lms.Library.Models;
+using Lms.Library.Services;
 
-namespace COP4870_LMS.Helpers;
+namespace Lms.FrontEnd.Cli.Helpers;
 
 public class AssignmentHelper
 {

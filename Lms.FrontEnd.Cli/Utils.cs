@@ -1,4 +1,4 @@
-namespace COP4870_LMS;
+namespace Lms.FrontEnd.Cli;
 
 public static class Utils
 {

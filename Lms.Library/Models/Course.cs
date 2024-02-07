@@ -1,4 +1,4 @@
-namespace COP4870_LMS.Models;
+namespace Lms.Library.Models;
 
 public class Course
 {
@@ -6,9 +6,9 @@ public class Course
     public string Code { get; set; } = "";
     public string Name { get; set; } = "";
     public string Description { get; set; } = "";
-    public List<Guid> Roster { get; } = new();
-    public List<Guid> Assignments { get; } = new();
-    public List<Guid> Modules { get; } = new();
+    public List<Guid> Roster { get; } = [];
+    public List<Guid> Assignments { get; } = [];
+    public List<Guid> Modules { get; } = [];
 
     public override string ToString()
     {

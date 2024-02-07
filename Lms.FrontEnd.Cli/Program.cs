@@ -1,9 +1,9 @@
-using COP4870_LMS.CLI;
-using COP4870_LMS.Helpers;
-using COP4870_LMS.Models;
-using COP4870_LMS.Services;
+using Lms.FrontEnd.Cli.CLI;
+using Lms.FrontEnd.Cli.Helpers;
+using Lms.Library.Models;
+using Lms.Library.Services;
 
-namespace COP4870_LMS;
+namespace Lms.FrontEnd.Cli;
 
 internal static class Program
 {

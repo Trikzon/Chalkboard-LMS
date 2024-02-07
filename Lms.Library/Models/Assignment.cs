@@ -1,4 +1,4 @@
-namespace COP4870_LMS.Models;
+namespace Lms.Library.Models;
 
 public class Assignment
 {

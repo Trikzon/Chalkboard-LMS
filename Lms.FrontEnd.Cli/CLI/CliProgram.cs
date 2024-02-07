@@ -1,6 +1,4 @@
-using System.Text;
-
-namespace COP4870_LMS.CLI;
+namespace Lms.FrontEnd.Cli.CLI;
 
 public class CliProgram
 {

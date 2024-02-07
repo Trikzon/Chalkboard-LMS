@@ -1,6 +1,6 @@
-using COP4870_LMS.Models;
+using Lms.Library.Models;
 
-namespace COP4870_LMS.Services;
+namespace Lms.Library.Services;
 
 public class PersonService
 {
