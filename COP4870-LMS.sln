@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lms.FrontEnd.Cli", "Lms.Fro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lms.Library", "Lms.Library\Lms.Library.csproj", "{81BE6E42-14C7-4B85-9E72-C8D90AA6AB36}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lms.FrontEnd.Maui", "Lms.FrontEnd.Maui\Lms.FrontEnd.Maui.csproj", "{C63E068A-BC02-4677-A2CE-E9B65D0F6C97}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{81BE6E42-14C7-4B85-9E72-C8D90AA6AB36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81BE6E42-14C7-4B85-9E72-C8D90AA6AB36}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81BE6E42-14C7-4B85-9E72-C8D90AA6AB36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C63E068A-BC02-4677-A2CE-E9B65D0F6C97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C63E068A-BC02-4677-A2CE-E9B65D0F6C97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C63E068A-BC02-4677-A2CE-E9B65D0F6C97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C63E068A-BC02-4677-A2CE-E9B65D0F6C97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
