@@ -62,4 +62,13 @@
       <MauiPlatformSpecificFolder Remove="Platforms\Tizen\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Lms.Library\Lms.Library.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="ViewModels\" />
+      <Folder Include="Views\" />
+    </ItemGroup>
+
 </Project>
