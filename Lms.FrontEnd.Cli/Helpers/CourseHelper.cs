@@ -4,18 +4,9 @@ using Lms.Library.Services;
 
 namespace Lms.FrontEnd.Cli.Helpers;
 
-public class CourseHelper
+public static class CourseHelper
 {
-    private readonly PersonService _personService;
-    private readonly CourseService _courseService;
-
-    public CourseHelper(PersonService personService, CourseService courseService)
-    {
-        _personService = personService;
-        _courseService = courseService;
-    }
-
-    public void CreateCourse()
+    public static void CreateCourse()
     {
         var course = new Course();
         
@@ -28,25 +19,25 @@ public class CourseHelper
         if (!UpdateDescription(course))
             return;
         
-        _courseService.AddCourse(course);
+        CourseService.Current.AddCourse(course);
         Console.WriteLine($"Successfully Created Course {course}.");
     }
 
-    public void ListCourses()
+    public static void ListCourses()
     {
-        Utils.DisplayList(_courseService.GetList());
+        Utils.DisplayList(CourseService.Current.GetList());
     }
 
-    public void SearchCourses(CliProgram cli)
+    public static void SearchCourses(CliProgram cli)
     {
-        var results = _courseService.Search(Utils.ReadString("Search Query"));
+        var results = CourseService.Current.Search(Utils.ReadString("Search Query"));
         cli.DisplayHeader("Search Students");
         Utils.DisplayList(results);
     }
 
-    public Guid? SelectCourse(CliProgram cli)
+    public static Guid? SelectCourse(CliProgram cli)
     {
-        var results = _courseService.Search(Utils.ReadString("Search Query"));
+        var results = CourseService.Current.Search(Utils.ReadString("Search Query"));
         
         cli.DisplayHeader("Select Course");
         if (!Utils.TrySelectFromList("Course", results, out var course) || course == null)
@@ -57,7 +48,7 @@ public class CourseHelper
         return course.Id;
     }
 
-    public bool UpdateCode(Course course)
+    public static bool UpdateCode(Course course)
     {
         var code = Utils.ReadString("Code");
         if (code == "")
@@ -70,7 +61,7 @@ public class CourseHelper
         return true;
     }
 
-    public bool UpdateName(Course course)
+    public static bool UpdateName(Course course)
     {
         var name = Utils.ReadString("Name");
         if (name == "")
@@ -83,39 +74,39 @@ public class CourseHelper
         return true;
     }
 
-    public bool UpdateDescription(Course course)
+    public static bool UpdateDescription(Course course)
     {
         course.Description = Utils.ReadString("Description");
         return true;
     }
 
-    public void DeleteCourse(CliProgram cli, Course course)
+    public static void DeleteCourse(CliProgram cli, Course course)
     {
         if (Utils.ConfirmDeletion("Course"))
         {
-            _courseService.RemoveCourse(course);
+            CourseService.Current.RemoveCourse(course);
             Console.WriteLine("Successfully Deleted the Course.");
             cli.NavigateBack();
         }
     }
 
-    public void EnrollStudent(CliProgram cli, Course course)
+    public static void EnrollStudent(CliProgram cli, Course course)
     {
-        var results = _personService.Search(Utils.ReadString("Search Query"))
-                                    .Where(student => !course.Roster.Contains(student.Id))
-                                    .ToList();
+        var results = PersonService.Current.Search(Utils.ReadString("Search Query"))
+            .Where(student => !course.Roster.Contains(student.Id))
+            .ToList();
         
         cli.DisplayHeader("Enroll Student");
-        if (Utils.TrySelectFromList("Student", results, out var student) && student != null)
-        {
-            course.Roster.Add(student.Id);
-            Console.WriteLine($"Successfully Enrolled Student {student}");
-        }
+        
+        if (!Utils.TrySelectFromList("Student", results, out var student) || student == null) return;
+        
+        course.Roster.Add(student.Id);
+        Console.WriteLine($"Successfully Enrolled Student {student}");
     }
 
-    public void DropStudent(Course course)
+    public static void DropStudent(Course course)
     {
-        var students = course.Roster.Select(id => _personService.GetPerson(id)).ToList();
+        var students = course.Roster.Select(id => PersonService.Current.GetPerson(id)).ToList();
         if (Utils.TrySelectFromList("Student", students, out var student) && student != null)
         {
             course.Roster.Remove(student.Id);
@@ -123,8 +114,8 @@ public class CourseHelper
         }
     }
 
-    public void ListEnrolledStudents(Course course)
+    public static void ListEnrolledStudents(Course course)
     {
-        Utils.DisplayList(course.Roster.Select(id => _personService.GetPerson(id)).ToList());
+        Utils.DisplayList(course.Roster.Select(id => PersonService.Current.GetPerson(id)).ToList());
     }
 }

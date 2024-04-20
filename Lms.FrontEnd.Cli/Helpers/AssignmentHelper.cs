@@ -4,18 +4,9 @@ using Lms.Library.Services;
 
 namespace Lms.FrontEnd.Cli.Helpers;
 
-public class AssignmentHelper
+public static class AssignmentHelper
 {
-    private readonly AssignmentService _assignmentService;
-    private readonly CourseService _courseService;
-
-    public AssignmentHelper(AssignmentService assignmentService, CourseService courseService)
-    {
-        _assignmentService = assignmentService;
-        _courseService = courseService;
-    }
-
-    public void CreateAssignment(Course course)
+    public static void CreateAssignment(Course course)
     {
         var assignment = new Assignment();
         
@@ -33,18 +24,18 @@ public class AssignmentHelper
 
         assignment.CourseId = course.Id;
         course.Assignments.Add(assignment.Id);
-        _assignmentService.AddAssignment(assignment);
+        AssignmentService.Current.AddAssignment(assignment);
         Console.WriteLine($"Successfully Created Assignment {assignment}.");
     }
 
-    public void ListAssignments(Course course)
+    public static void ListAssignments(Course course)
     {
-        Utils.DisplayList(course.Assignments.Select(id => _assignmentService.GetAssignment(id)).ToList());
+        Utils.DisplayList(course.Assignments.Select(id => AssignmentService.Current.GetAssignment(id)).ToList());
     }
 
-    public Guid? SelectAssignment(Course course)
+    public static Guid? SelectAssignment(Course course)
     {
-        var assignments = course.Assignments.Select(id => _assignmentService.GetAssignment(id)).ToList();
+        var assignments = course.Assignments.Select(id => AssignmentService.Current.GetAssignment(id)).ToList();
         if (!Utils.TrySelectFromList("Assignment", assignments, out var assignment) || assignment == null)
         {
             return null;
@@ -53,7 +44,7 @@ public class AssignmentHelper
         return assignment.Id;
     }
 
-    public bool UpdateName(Assignment assignment)
+    public static bool UpdateName(Assignment assignment)
     {
         var name = Utils.ReadString("Name");
         if (name == "")
@@ -66,13 +57,13 @@ public class AssignmentHelper
         return true;
     }
 
-    public bool UpdateDescription(Assignment assignment)
+    public static bool UpdateDescription(Assignment assignment)
     {
         assignment.Description = Utils.ReadString("Description");
         return true;
     }
 
-    public bool UpdateTotalAvailablePoints(Assignment assignment)
+    public static bool UpdateTotalAvailablePoints(Assignment assignment)
     {
         if (!double.TryParse(Utils.ReadString("Total Available Points"), out var totalAvailablePoints) && totalAvailablePoints >= 0)
         {
@@ -84,7 +75,7 @@ public class AssignmentHelper
         return true;
     }
 
-    public bool UpdateDueDate(Assignment assignment)
+    public static bool UpdateDueDate(Assignment assignment)
     {
         if (!DateTime.TryParse(Utils.ReadString("Due Date"), out var dueDate))
         {
@@ -96,14 +87,13 @@ public class AssignmentHelper
         return true;
     }
 
-    public void DeleteAssignment(CliProgram cli, Assignment assignment)
+    public static void DeleteAssignment(CliProgram cli, Assignment assignment)
     {
-        if (Utils.ConfirmDeletion("Assignment"))
-        {
-            _courseService.GetCourse(assignment.CourseId)?.Assignments.Remove(assignment.Id);
-            _assignmentService.RemoveAssignment(assignment);
-            Console.WriteLine("Successfully Deleted the Assignment.");
-            cli.NavigateBack();
-        }
+        if (!Utils.ConfirmDeletion("Assignment")) return;
+        
+        CourseService.Current.GetCourse(assignment.CourseId)?.Assignments.Remove(assignment.Id);
+        AssignmentService.Current.RemoveAssignment(assignment);
+        Console.WriteLine("Successfully Deleted the Assignment.");
+        cli.NavigateBack();
     }
 }

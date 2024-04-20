@@ -1,20 +1,16 @@
+using Lms.Library.Databases;
 using Lms.Library.Models;
 
 namespace Lms.Library.Services;
 
 public class CourseService
 {
-    private readonly IList<Course> _courses;
-    
-    public CourseService()
-    {
-        _courses = new List<Course>();
-    }
+    private static CourseService? _instance;
+    public static CourseService Current = _instance ??= new CourseService();
 
-    public CourseService(IList<Course> courses)
-    {
-        _courses = courses;
-    }
+    private readonly List<Course> _courses = FakeDatabase.Courses;
+    
+    private CourseService() { }
 
     public void AddCourse(Course course)
     {

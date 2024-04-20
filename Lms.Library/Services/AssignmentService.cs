@@ -1,20 +1,16 @@
+using Lms.Library.Databases;
 using Lms.Library.Models;
 
 namespace Lms.Library.Services;
 
 public class AssignmentService
 {
-    private readonly IList<Assignment> _assignments;
-
-    public AssignmentService()
-    {
-        _assignments = new List<Assignment>();
-    }
-
-    public AssignmentService(IList<Assignment> assignments)
-    {
-        _assignments = assignments;
-    }
+    private static AssignmentService? _instance;
+    public static AssignmentService Current => _instance ??= new AssignmentService();
+    
+    private readonly List<Assignment> _assignments = FakeDatabase.Assignments;
+    
+    private AssignmentService() { }
 
     public void AddAssignment(Assignment assignment)
     {

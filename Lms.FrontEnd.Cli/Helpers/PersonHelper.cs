@@ -4,18 +4,9 @@ using Lms.Library.Services;
 
 namespace Lms.FrontEnd.Cli.Helpers;
 
-public class PersonHelper
+public static class PersonHelper
 {
-    private readonly PersonService _personService;
-    private readonly CourseService _courseService;
-    
-    public PersonHelper(PersonService personService, CourseService courseService)
-    {
-        _personService = personService;
-        _courseService = courseService;
-    }
-    
-    public void CreateStudent()
+    public static void CreateStudent()
     {
         var student = new Person();
         
@@ -28,25 +19,25 @@ public class PersonHelper
         if (!UpdateGrades(student))
             return;
         
-        _personService.AddPerson(student);
+        PersonService.Current.AddPerson(student);
         Console.WriteLine($"Successfully Created Student {student}.");
     }
 
-    public void ListStudents()
+    public static void ListStudents()
     {
-        Utils.DisplayList(_personService.GetList());
+        Utils.DisplayList(PersonService.Current.GetList());
     }
 
-    public void SearchStudents(CliProgram cli)
+    public static void SearchStudents(CliProgram cli)
     {
-        var results = _personService.Search(Utils.ReadString("Search Query"));
+        var results = PersonService.Current.Search(Utils.ReadString("Search Query"));
         cli.DisplayHeader("Search Students");
         Utils.DisplayList(results);
     }
 
-    public Guid? SelectStudent(CliProgram cli)
+    public static Guid? SelectStudent(CliProgram cli)
     {
-        var results = _personService.Search(Utils.ReadString("Search Query"));
+        var results = PersonService.Current.Search(Utils.ReadString("Search Query"));
         
         cli.DisplayHeader("Select Student");
         if (!Utils.TrySelectFromList("Student", results, out var student) || student == null)
@@ -57,7 +48,7 @@ public class PersonHelper
         return student.Id;
     }
 
-    public bool UpdateName(Person person)
+    public static bool UpdateName(Person person)
     {
         var name = Utils.ReadString("Name");
         if (name == "")
@@ -70,7 +61,7 @@ public class PersonHelper
         return true;
     }
 
-    public bool UpdateClassification(Person person)
+    public static bool UpdateClassification(Person person)
     {
         if (!person.TryParseClassification(Utils.ReadString("Classification")))
         {
@@ -81,7 +72,7 @@ public class PersonHelper
         return true;
     }
 
-    public bool UpdateGrades(Person person)
+    public static bool UpdateGrades(Person person)
     {
         if (!double.TryParse(Utils.ReadString("Grades (GPA)"), out var grades))
         {
@@ -93,22 +84,21 @@ public class PersonHelper
         return true;
     }
     
-    public void DeletePerson(CliProgram cli, Person person)
+    public static void DeletePerson(CliProgram cli, Person person)
     {
-        if (Utils.ConfirmDeletion("Person"))
+        if (!Utils.ConfirmDeletion("Person")) return;
+        
+        foreach (var course in CourseService.Current.FilterByPerson(person.Id))
         {
-            foreach (var course in _courseService.FilterByPerson(person.Id))
-            {
-                course.Roster.Remove(person.Id);
-            }
-            _personService.RemovePerson(person);
-            Console.WriteLine("Successfully Deleted the Person.");
-            cli.NavigateBack();
+            course.Roster.Remove(person.Id);
         }
+        PersonService.Current.RemovePerson(person);
+        Console.WriteLine("Successfully Deleted the Person.");
+        cli.NavigateBack();
     }
 
-    public void ListEnrolledCourses(Guid id)
+    public static void ListEnrolledCourses(Guid id)
     {
-        Utils.DisplayList(_courseService.FilterByPerson(id));
+        Utils.DisplayList(CourseService.Current.FilterByPerson(id));
     }
 }

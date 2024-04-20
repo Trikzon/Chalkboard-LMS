@@ -1,20 +1,16 @@
+using Lms.Library.Databases;
 using Lms.Library.Models;
 
 namespace Lms.Library.Services;
 
 public class PersonService
 {
-    private readonly IList<Person> _people;
+    private static PersonService? _instance;
+    public static PersonService Current => _instance ??= new PersonService();
 
-    public PersonService()
-    {
-        _people = new List<Person>();
-    }
+    private readonly List<Person> _people = FakeDatabase.People;
 
-    public PersonService(IList<Person> people)
-    {
-        _people = people;
-    }
+    private PersonService() { }
 
     public void AddPerson(Person person)
     {
@@ -38,6 +34,6 @@ public class PersonService
 
     public IReadOnlyList<Person> Search(string query)
     {
-        return _people.Where(person => person.Name.ToLower().Contains(query.ToLower())).ToList();
+        return _people.Where(person => person.Name.Contains(query, StringComparison.CurrentCultureIgnoreCase)).ToList();
     }
 }

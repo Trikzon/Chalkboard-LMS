@@ -1,20 +1,16 @@
+using Lms.Library.Databases;
 using Lms.Library.Models;
 
 namespace Lms.Library.Services;
 
 public class ModuleService
 {
-    private readonly IList<Module> _modules;
+    private static ModuleService? _instance;
+    public static ModuleService Current => _instance ??= new ModuleService();
 
-    public ModuleService()
-    {
-        _modules = new List<Module>();
-    }
+    private readonly List<Module> _modules = FakeDatabase.Modules;
 
-    public ModuleService(IList<Module> modules)
-    {
-        _modules = modules;
-    }
+    private ModuleService() { }
 
     public void AddModule(Module module)
     {

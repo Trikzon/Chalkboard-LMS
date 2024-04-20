@@ -4,18 +4,9 @@ using Lms.Library.Services;
 
 namespace Lms.FrontEnd.Cli.Helpers;
 
-public class ModuleHelper
+public static class ModuleHelper
 {
-    private readonly ModuleService _moduleService;
-    private readonly CourseService _courseService;
-
-    public ModuleHelper(ModuleService moduleService, CourseService courseService)
-    {
-        _moduleService = moduleService;
-        _courseService = courseService;
-    }
-    
-    public void CreateModule(Course course)
+    public static void CreateModule(Course course)
     {
         var module = new Module();
         
@@ -27,18 +18,18 @@ public class ModuleHelper
 
         module.CourseId = course.Id;
         course.Modules.Add(module.Id);
-        _moduleService.AddModule(module);
+        ModuleService.Current.AddModule(module);
         Console.WriteLine($"Successfully Created Module {module}.");
     }
 
-    public void ListModules(Course course)
+    public static void ListModules(Course course)
     {
-        Utils.DisplayList(course.Modules.Select(id => _moduleService.GetModule(id)).ToList());
+        Utils.DisplayList(course.Modules.Select(id => ModuleService.Current.GetModule(id)).ToList());
     }
 
-    public Guid? SelectModule(Course course)
+    public static Guid? SelectModule(Course course)
     {
-        var modules = course.Modules.Select(id => _moduleService.GetModule(id)).ToList();
+        var modules = course.Modules.Select(id => ModuleService.Current.GetModule(id)).ToList();
         if (!Utils.TrySelectFromList("Module", modules, out var module) || module == null)
         {
             return null;
@@ -47,7 +38,7 @@ public class ModuleHelper
         return module.Id;
     }
     
-    public bool UpdateName(Module module)
+    public static bool UpdateName(Module module)
     {
         var name = Utils.ReadString("Name");
         if (name == "")
@@ -60,20 +51,19 @@ public class ModuleHelper
         return true;
     }
 
-    public bool UpdateDescription(Module module)
+    public static bool UpdateDescription(Module module)
     {
         module.Description = Utils.ReadString("Description");
         return true;
     }
 
-    public void DeleteModule(CliProgram cli, Module module)
+    public static void DeleteModule(CliProgram cli, Module module)
     {
-        if (Utils.ConfirmDeletion("Module"))
-        {
-            _courseService.GetCourse(module.CourseId)?.Modules.Remove(module.Id);
-            _moduleService.RemoveModule(module);
-            Console.WriteLine("Successfully Deleted the Module.");
-            cli.NavigateBack();
-        }
+        if (!Utils.ConfirmDeletion("Module")) return;
+        
+        CourseService.Current.GetCourse(module.CourseId)?.Modules.Remove(module.Id);
+        ModuleService.Current.RemoveModule(module);
+        Console.WriteLine("Successfully Deleted the Module.");
+        cli.NavigateBack();
     }
 }
