@@ -67,8 +67,23 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="ViewModels\" />
-      <Folder Include="Views\" />
+      <MauiXaml Update="Views\InstructorPage.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
+      <MauiXaml Update="Views\LoginPage.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Views\InstructorPage.xaml.cs">
+        <DependentUpon>InstructorPage.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\LoginPage.xaml.cs">
+        <DependentUpon>LoginPage.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 
 </Project>

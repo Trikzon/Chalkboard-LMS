@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Lms.FrontEnd.Maui.Views.CoursePage"
+             Title="{Binding Course.Name}">
+    <ContentPage.Content>
+        <HorizontalStackLayout>
+            <Border Padding="16"
+                    WidthRequest="400">
+                <VerticalStackLayout>
+                    <Label Text="{Binding Course.Name}"
+                           FontSize="36"
+                           HorizontalTextAlignment="Center"
+                           Margin="0, 0, 0, 16"
+                           TextDecorations="Underline"/>
+                    <FlexLayout JustifyContent="SpaceBetween"
+                                Margin="0, 4">
+                        <Label VerticalOptions="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Name: " FontAttributes="Bold"/>
+                                    <Span Text="{Binding Course.Name}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Button Text="Edit ✎"
+                                Padding="8, 4"
+                                Clicked="EditCourseName_OnClicked"
+                                IsVisible="{Binding IsInstructor}"/>
+                    </FlexLayout>
+                    <FlexLayout JustifyContent="SpaceBetween"
+                                Margin="0, 4">
+                        <Label VerticalOptions="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Code: " FontAttributes="Bold"/>
+                                    <Span Text="{Binding Course.Code}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Button Text="Edit ✎"
+                                Padding="8, 4"
+                                Clicked="EditCourseCode_OnClicked"
+                                IsVisible="{Binding IsInstructor}"/>
+                    </FlexLayout>
+                    <FlexLayout JustifyContent="SpaceBetween"
+                                Margin="0, 4">
+                        <Label VerticalOptions="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Description: " FontAttributes="Bold"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Button Text="Edit ✎"
+                                Padding="8, 4"
+                                Clicked="EditCourseDescription_OnClicked"
+                                IsVisible="{Binding IsInstructor}"/>
+                    </FlexLayout>
+                    <Border Padding="8">
+                        <ScrollView MaximumHeightRequest="200">
+                            <Label Text="{Binding Course.Description}"
+                                   LineBreakMode="WordWrap"/>
+                        </ScrollView>
+                    </Border>
+                </VerticalStackLayout>
+            </Border>
+            <ScrollView>
+                <VerticalStackLayout>
+                    <Label Text="Module"/>
+                </VerticalStackLayout>
+            </ScrollView>
+        </HorizontalStackLayout>
+    </ContentPage.Content>
+</ContentPage>
