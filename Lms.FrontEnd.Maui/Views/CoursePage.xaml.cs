@@ -16,11 +16,11 @@ public partial class CoursePage : ContentPage
         var result = await DisplayPromptAsync(
             "Edit Course Name", "", "Save",
             placeholder: "Course Name",
-            initialValue: ((CourseViewModel)BindingContext).Course.Name
+            initialValue: ((CourseViewModel)BindingContext).Name
         );
         if (result != null)
         {
-            ((CourseViewModel)BindingContext).UpdateName(result);
+            ((CourseViewModel)BindingContext).Name = result;
         }
     }
     
@@ -29,24 +29,11 @@ public partial class CoursePage : ContentPage
         var result = await DisplayPromptAsync(
             "Edit Course Code", "", "Save",
             placeholder: "Course Code",
-            initialValue: ((CourseViewModel)BindingContext).Course.Code
+            initialValue: ((CourseViewModel)BindingContext).Code
         );
         if (result != null)
         {
-            ((CourseViewModel)BindingContext).UpdateCode(result);
-        }
-    }
-    
-    private async void EditCourseDescription_OnClicked(object? sender, EventArgs e)
-    {
-        var result = await DisplayPromptAsync(
-            "Edit Course Description", "", "Save",
-            placeholder: "Course Description",
-            initialValue: ((CourseViewModel)BindingContext).Course.Description
-        );
-        if (result != null)
-        {
-            ((CourseViewModel)BindingContext).UpdateDescription(result);
+            ((CourseViewModel)BindingContext).Code = result;
         }
     }
 }

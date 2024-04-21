@@ -2,14 +2,20 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="Lms.FrontEnd.Maui.Views.CoursePage"
-             Title="{Binding Course.Name}">
+             Title="{Binding Name}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <HorizontalStackLayout>
             <Border Padding="16"
                     WidthRequest="400">
                 <VerticalStackLayout>
-                    <Label Text="{Binding Course.Name}"
+                    <Label Text="{Binding Name}"
                            FontSize="36"
                            HorizontalTextAlignment="Center"
                            Margin="0, 0, 0, 16"
@@ -20,7 +26,7 @@
                             <Label.FormattedText>
                                 <FormattedString>
                                     <Span Text="Name: " FontAttributes="Bold"/>
-                                    <Span Text="{Binding Course.Name}"/>
+                                    <Span Text="{Binding Name}"/>
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
@@ -35,7 +41,7 @@
                             <Label.FormattedText>
                                 <FormattedString>
                                     <Span Text="Code: " FontAttributes="Bold"/>
-                                    <Span Text="{Binding Course.Code}"/>
+                                    <Span Text="{Binding Code}"/>
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
@@ -44,25 +50,19 @@
                                 Clicked="EditCourseCode_OnClicked"
                                 IsVisible="{Binding IsInstructor}"/>
                     </FlexLayout>
-                    <FlexLayout JustifyContent="SpaceBetween"
-                                Margin="0, 4">
-                        <Label VerticalOptions="Center">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="Description: " FontAttributes="Bold"/>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                        <Button Text="Edit ✎"
-                                Padding="8, 4"
-                                Clicked="EditCourseDescription_OnClicked"
-                                IsVisible="{Binding IsInstructor}"/>
-                    </FlexLayout>
+                    <Label Margin="0, 4">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Description: " FontAttributes="Bold"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
                     <Border Padding="8">
-                        <ScrollView MaximumHeightRequest="200">
-                            <Label Text="{Binding Course.Description}"
-                                   LineBreakMode="WordWrap"/>
-                        </ScrollView>
+                            <ScrollView>
+                                <Editor Text="{Binding Description, Mode=TwoWay}"
+                                        HeightRequest="200"
+                                        IsReadOnly="{Binding IsInstructor, Converter={StaticResource InvertedBoolConverter}}"/>
+                            </ScrollView>
                     </Border>
                 </VerticalStackLayout>
             </Border>

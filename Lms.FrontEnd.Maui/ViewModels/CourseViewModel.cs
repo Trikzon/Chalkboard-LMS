@@ -6,28 +6,37 @@ namespace Lms.FrontEnd.Maui.ViewModels;
 
 public sealed class CourseViewModel(Course course, Person? student) : INotifyPropertyChanged
 {
-    public Course Course { get; } = course;
-    public Person? Student { get; } = student;
-    
-    public bool IsInstructor => Student is null;
-    
-    public void UpdateName(string name)
+    public string Name
     {
-        Course.Name = name;
-        OnPropertyChanged(nameof(Course));
+        get => course.Name;
+        set
+        {
+            course.Name = value;
+            OnPropertyChanged();
+        }
     }
     
-    public void UpdateCode(string code)
+    public string Code
     {
-        Course.Code = code;
-        OnPropertyChanged(nameof(Course));
+        get => course.Code;
+        set
+        {
+            course.Code = value;
+            OnPropertyChanged();
+        }
     }
     
-    public void UpdateDescription(string description)
+    public string Description
     {
-        Course.Description = description;
-        OnPropertyChanged(nameof(Course));
+        get => course.Description;
+        set
+        {
+            course.Description = value;
+            OnPropertyChanged();
+        }
     }
+
+    public bool IsInstructor => student is null;
     
     public event PropertyChangedEventHandler? PropertyChanged;
 
