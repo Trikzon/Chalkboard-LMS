@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Lms.Library.Models;
+using Lms.Library.Services;
 
 namespace Lms.FrontEnd.Maui.ViewModels;
 
@@ -35,7 +36,13 @@ public sealed class CourseViewModel(Course course, Person? student) : INotifyPro
             OnPropertyChanged();
         }
     }
-
+    
+    public IReadOnlyList<Person> Roster => course.Roster
+        .Select(PersonService.Current.GetPerson)
+        .Where(person => person is not null)
+        .Select(person => person!)
+        .ToList();
+    
     public bool IsInstructor => student is null;
     
     public event PropertyChangedEventHandler? PropertyChanged;

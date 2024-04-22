@@ -18,7 +18,7 @@ public partial class CoursePage : ContentPage
             placeholder: "Course Name",
             initialValue: ((CourseViewModel)BindingContext).Name
         );
-        if (result != null)
+        if (!string.IsNullOrEmpty(result))
         {
             ((CourseViewModel)BindingContext).Name = result;
         }
@@ -31,7 +31,7 @@ public partial class CoursePage : ContentPage
             placeholder: "Course Code",
             initialValue: ((CourseViewModel)BindingContext).Code
         );
-        if (result != null)
+        if (!string.IsNullOrEmpty(result))
         {
             ((CourseViewModel)BindingContext).Code = result;
         }

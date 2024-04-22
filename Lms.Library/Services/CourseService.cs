@@ -5,8 +5,8 @@ namespace Lms.Library.Services;
 
 public class CourseService
 {
-    private static CourseService? _instance;
-    public static CourseService Current = _instance ??= new CourseService();
+    private static readonly CourseService? Instance;
+    public static readonly CourseService Current = Instance ??= new CourseService();
 
     private readonly List<Course> _courses = FakeDatabase.Courses;
     
