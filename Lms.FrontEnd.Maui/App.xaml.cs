@@ -23,27 +23,6 @@ public partial class App : Application
         
         cop4530.Roster.Add(bob.Id);
         cop4530.Roster.Add(alice.Id);
-        cop4530.Roster.Add(alice.Id);
-        cop4530.Roster.Add(alice.Id);
-        cop4530.Roster.Add(alice.Id);
-        cop4530.Roster.Add(alice.Id);
-        cop4530.Roster.Add(alice.Id);
-        cop4530.Roster.Add(alice.Id);
-        cop4530.Roster.Add(alice.Id);
-        cop4530.Roster.Add(alice.Id);
-        cop4530.Roster.Add(alice.Id);
-        cop4530.Roster.Add(alice.Id);
-        cop4530.Roster.Add(alice.Id);
-        cop4530.Roster.Add(alice.Id);
-        cop4530.Roster.Add(alice.Id);
-        cop4530.Roster.Add(alice.Id);
-        cop4530.Roster.Add(alice.Id);
-        cop4530.Roster.Add(alice.Id);
-        cop4530.Roster.Add(alice.Id);
-        cop4530.Roster.Add(alice.Id);
-        cop4530.Roster.Add(alice.Id);
-        cop4530.Roster.Add(alice.Id);
-        cop4530.Roster.Add(alice.Id);
         ger2220.Roster.Add(bob.Id);
     }
 }

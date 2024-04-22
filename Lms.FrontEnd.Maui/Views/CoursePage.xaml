@@ -11,103 +11,107 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <HorizontalStackLayout>
-            <Border Padding="16"
-                    WidthRequest="400">
-                <VerticalStackLayout>
+        <Grid ColumnDefinitions="400, *">
+            <Border Padding="16">
+                <Grid RowDefinitions="Auto, Auto, *">
                     <Label Text="{Binding Name}"
                            FontSize="36"
                            HorizontalTextAlignment="Center"
                            Margin="0, 0, 0, 16"
                            TextDecorations="Underline"/>
-                    <FlexLayout JustifyContent="SpaceBetween"
-                                Margin="0, 4">
-                        <Label VerticalOptions="Center">
+                    <Grid Grid.Row="1"
+                          RowDefinitions="Auto, Auto, Auto, Auto">
+                        <Grid ColumnDefinitions="*, Auto"
+                              Margin="0, 4"
+                              Grid.Row="0">
+                            <Label VerticalOptions="Center">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Name: " FontAttributes="Bold"/>
+                                        <Span Text="{Binding Name}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Button Text="Edit ✎"
+                                    Padding="8, 4"
+                                    Clicked="EditCourseName_OnClicked"
+                                    IsVisible="{Binding IsInstructor}"
+                                    Grid.Column="1"/>
+                        </Grid>
+                        <Grid ColumnDefinitions="*, Auto"
+                              Margin="0, 4"
+                              Grid.Row="1">
+                            <Label VerticalOptions="Center">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Code: " FontAttributes="Bold"/>
+                                        <Span Text="{Binding Code}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Button Text="Edit ✎"
+                                    Padding="8, 4"
+                                    Clicked="EditCourseCode_OnClicked"
+                                    IsVisible="{Binding IsInstructor}"
+                                    Grid.Column="1"/>
+                        </Grid>
+                        <Label Margin="0, 4"
+                               Grid.Row="2">
                             <Label.FormattedText>
                                 <FormattedString>
-                                    <Span Text="Name: " FontAttributes="Bold"/>
-                                    <Span Text="{Binding Name}"/>
+                                    <Span Text="Description: " FontAttributes="Bold"/>
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
-                        <Button Text="Edit ✎"
-                                Padding="8, 4"
-                                Clicked="EditCourseName_OnClicked"
-                                IsVisible="{Binding IsInstructor}"/>
-                    </FlexLayout>
-                    <FlexLayout JustifyContent="SpaceBetween"
-                                Margin="0, 4">
-                        <Label VerticalOptions="Center">
+                        <Border Padding="8"
+                                Grid.Row="3">
+                                <ScrollView>
+                                    <Editor Text="{Binding Description, Mode=TwoWay}"
+                                            HeightRequest="100"
+                                            IsReadOnly="{Binding IsInstructor, Converter={StaticResource InvertedBoolConverter}}"/>
+                                </ScrollView>
+                        </Border>
+                    </Grid>
+                    
+                    <Grid Grid.Row="2"
+                          RowDefinitions="Auto, *, Auto"
+                          Margin="0, 24, 0, 0">
+                        <Label>
                             <Label.FormattedText>
                                 <FormattedString>
-                                    <Span Text="Code: " FontAttributes="Bold"/>
-                                    <Span Text="{Binding Code}"/>
+                                    <Span Text="Enrolled Students:" FontAttributes="Bold"/>
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
-                        <Button Text="Edit ✎"
-                                Padding="8, 4"
-                                Clicked="EditCourseCode_OnClicked"
-                                IsVisible="{Binding IsInstructor}"/>
-                    </FlexLayout>
-                    <Label Margin="0, 4">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="Description: " FontAttributes="Bold"/>
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
-                    <Border Padding="8">
+                        <Border Padding="8"
+                                Margin="0, 8"
+                                Grid.Row="1">
                             <ScrollView>
-                                <Editor Text="{Binding Description, Mode=TwoWay}"
-                                        HeightRequest="100"
-                                        IsReadOnly="{Binding IsInstructor, Converter={StaticResource InvertedBoolConverter}}"/>
+                                <CollectionView ItemsSource="{Binding Roster}">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid ColumnDefinitions="*, Auto"
+                                                  Margin="0, 4">
+                                                <Label Text="{Binding .}"
+                                                       VerticalOptions="Center"/>
+                                                <Button Text="Remove ✕"
+                                                        Padding="8, 4"
+                                                        VerticalOptions="Start"
+                                                        IsVisible="{Binding IsInstructor}"
+                                                        Grid.Column="1"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
                             </ScrollView>
-                    </Border>
-                    
-                    <BoxView HeightRequest="1"
-                             BackgroundColor="Black"
-                             HorizontalOptions="Fill"
-                             Margin="0, 8"/>
-                    
-                    <Label>
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="Enrolled Students:" FontAttributes="Bold"/>
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
-                    <ScrollView>
-                        <CollectionView ItemsSource="{Binding Roster}">
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <FlexLayout JustifyContent="SpaceBetween"
-                                                Margin="0, 4">
-                                        <Label VerticalOptions="Center">
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <Span Text="‣ "/>
-                                                    <Span Text="{Binding Classification}"/>
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>
-                                        <Button Text="Remove ✕"
-                                                Padding="8, 4"
-                                                VerticalOptions="Start"
-                                                IsVisible="{Binding IsInstructor}"/>
-                                    </FlexLayout>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-                    </ScrollView>
-                    <Button Text="Add Student"/>
-                </VerticalStackLayout>
+                        </Border>
+                        <Button Text="Add Student"
+                                Grid.Row="2"/>
+                    </Grid>
+                </Grid>
             </Border>
-            <ScrollView>
-                <VerticalStackLayout>
-                    <Label Text="Module"/>
-                </VerticalStackLayout>
+            <ScrollView Grid.Column="1">
             </ScrollView>
-        </HorizontalStackLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
