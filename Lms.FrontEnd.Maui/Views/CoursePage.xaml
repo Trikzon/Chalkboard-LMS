@@ -11,7 +11,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid ColumnDefinitions="400, *">
+        <Grid ColumnDefinitions="*, 2*">
             <Border Padding="16">
                 <Grid RowDefinitions="Auto, Auto, *">
                     <Label Text="{Binding Name}"
@@ -87,7 +87,7 @@
                                 Margin="0, 8"
                                 Grid.Row="1">
                             <ScrollView>
-                                <CollectionView ItemsSource="{Binding Roster}">
+                                <CollectionView ItemsSource="{Binding Roster.Students}">
                                     <CollectionView.ItemTemplate>
                                         <DataTemplate>
                                             <Grid ColumnDefinitions="*, Auto"
@@ -97,7 +97,9 @@
                                                 <Button Text="Remove ✕"
                                                         Padding="8, 4"
                                                         VerticalOptions="Start"
-                                                        IsVisible="{Binding IsInstructor}"
+                                                        IsVisible="{Binding BindingContext.IsInstructor, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
+                                                        Command="{Binding BindingContext.RemoveStudentCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
+                                                        CommandParameter="{Binding .}"
                                                         Grid.Column="1"/>
                                             </Grid>
                                         </DataTemplate>
@@ -105,8 +107,9 @@
                                 </CollectionView>
                             </ScrollView>
                         </Border>
-                        <Button Text="Add Student"
-                                Grid.Row="2"/>
+                        <Button Text="Add Students"
+                                Grid.Row="2"
+                                Clicked="AddStudents_OnClicked"/>
                     </Grid>
                 </Grid>
             </Border>

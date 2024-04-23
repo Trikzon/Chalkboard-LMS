@@ -11,6 +11,11 @@ public partial class CoursePage : ContentPage
         BindingContext = viewModel;
     }
 
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        ((CourseViewModel)BindingContext).Update();
+    }
+
     private async void EditCourseName_OnClicked(object? sender, EventArgs e)
     {
         var result = await DisplayPromptAsync(
@@ -35,5 +40,10 @@ public partial class CoursePage : ContentPage
         {
             ((CourseViewModel)BindingContext).Code = result;
         }
+    }
+
+    private async void AddStudents_OnClicked(object? sender, EventArgs e)
+    {
+        await Shell.Current.Navigation.PushAsync(new AddStudentsPage(((CourseViewModel)BindingContext).Course));
     }
 }

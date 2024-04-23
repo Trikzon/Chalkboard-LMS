@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 using Lms.Library.Models;
 using Lms.Library.Services;
 
@@ -7,6 +8,8 @@ namespace Lms.FrontEnd.Maui.ViewModels;
 
 public sealed class CourseViewModel(Course course, Person? student) : INotifyPropertyChanged
 {
+    public Course Course => course;
+    
     public string Name
     {
         get => course.Name;
@@ -37,13 +40,23 @@ public sealed class CourseViewModel(Course course, Person? student) : INotifyPro
         }
     }
     
-    public IReadOnlyList<Person> Roster => course.Roster
-        .Select(PersonService.Current.GetPerson)
-        .Where(person => person is not null)
-        .Select(person => person!)
-        .ToList();
+    public RosterViewModel Roster => new RosterViewModel(course);
     
     public bool IsInstructor => student is null;
+    
+    public ICommand RemoveStudentCommand => new Command<Person>(RemoveStudent);
+    
+    private void RemoveStudent(Person student)
+    {
+        Roster.Unenroll(student);
+        OnPropertyChanged(nameof(Roster));
+    }
+
+    public void Update()
+    {
+        Roster.Update();
+        OnPropertyChanged(nameof(Roster));
+    }
     
     public event PropertyChangedEventHandler? PropertyChanged;
 
