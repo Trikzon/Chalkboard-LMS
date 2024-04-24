@@ -6,12 +6,24 @@
              Title="Login">
     <ContentPage.Content>
         <ScrollView>
-            <VerticalStackLayout>
-                <Button Text="I am an Instructor"
-                        Clicked="Instructor_ButtonClicked"/>
-                <Button Text="I am a Student"
-                        Clicked="Student_ButtonClicked"/>
-            </VerticalStackLayout>
+            <Grid ColumnDefinitions="*, *, *">
+                <Grid RowDefinitions="*, Auto, Auto, Auto, 2*"
+                      Grid.Column="1">
+                    <Label Text="Chalkboard LMS"
+                           FontSize="48"
+                           HorizontalTextAlignment="Center"
+                           Margin="0, 0, 0, 32"
+                           TextDecorations="Underline"
+                           Grid.Row="1"/>
+                    <Button Text="I am an Instructor"
+                            Clicked="Instructor_ButtonClicked"
+                            Grid.Row="2"
+                            Margin="0, 0, 0, 16"/>
+                    <Button Text="I am a Student"
+                            Clicked="Student_ButtonClicked"
+                            Grid.Row="3"/>
+                </Grid>
+            </Grid>
         </ScrollView>
     </ContentPage.Content>
 </ContentPage>

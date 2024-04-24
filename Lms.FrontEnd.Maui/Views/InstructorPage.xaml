@@ -3,22 +3,126 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Lms.FrontEnd.Maui.Views.InstructorPage"
-             Title="Instructor"
-             x:Name="Page">
+             Title="Instructor">
     <ContentPage.Content>
-        <ScrollView>
-            <VerticalStackLayout>
-                <Label>Courses</Label>
-                <CollectionView ItemsSource="{Binding Courses}">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Button Text="{Binding Name}"
-                                    Command="{Binding Path=CourseCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
-                                    CommandParameter="{Binding .}"/>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </VerticalStackLayout>
-        </ScrollView>
+        <Grid ColumnDefinitions="*, 5*, *, 5*, *">
+            <!-- <Grid RowDefinitions="Auto, *, Auto" -->
+            <!--       Grid.Column="1" -->
+            <!--       RowSpacing="16" -->
+            <!--       Margin="0, 16"> -->
+            <!--     <Entry Placeholder="Search" -->
+            <!--            FontSize="16" -->
+            <!--            ClearButtonVisibility="WhileEditing" -->
+            <!--            IsSpellCheckEnabled="False"/> -->
+            <!--     <Border Grid.Row="1" -->
+            <!--             Padding="8"> -->
+            <!--         <ScrollView> -->
+            <!--             <VerticalStackLayout> -->
+            <!--                 <Label>Courses</Label> -->
+            <!--                 <CollectionView ItemsSource="{Binding Courses}"> -->
+            <!--                     <CollectionView.ItemTemplate> -->
+            <!--                         <DataTemplate> -->
+            <!--                             <Button Text="{Binding Name}" -->
+            <!--                                     Command="{Binding Path=CourseCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}" -->
+            <!--                                     CommandParameter="{Binding .}"/> -->
+            <!--                         </DataTemplate> -->
+            <!--                     </CollectionView.ItemTemplate> -->
+            <!--                 </CollectionView> -->
+            <!--             </VerticalStackLayout> -->
+            <!--         </ScrollView> -->
+            <!--     </Border> -->
+            <!--     <Button Text="Button" -->
+            <!--             Grid.Row="2"/> -->
+            <!-- </Grid> -->
+            <Grid RowDefinitions="Auto, Auto, *, Auto"
+                  Grid.Column="1"
+                  RowSpacing="16"
+                  Margin="0, 16">
+                <Label Text="All Courses"
+                       FontSize="36"
+                       HorizontalTextAlignment="Center"
+                       Margin="0, 0, 0, 16"
+                       TextDecorations="Underline"/>
+                <Entry Placeholder="Search"
+                       FontSize="16"
+                       ClearButtonVisibility="WhileEditing"
+                       IsSpellCheckEnabled="False"
+                       Grid.Row="1"/>
+                <Border Grid.Row="2"
+                        Padding="8">
+                    <ScrollView>
+                        <CollectionView ItemsSource="{Binding Courses}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid ColumnDefinitions="*, Auto, Auto"
+                                          ColumnSpacing="8"
+                                          Margin="0, 4">
+                                        <Label Text="{Binding Name}"
+                                               VerticalOptions="Center"/>
+                                        <Button Text="Edit ✎"
+                                                Padding="8, 4"
+                                                VerticalOptions="Start"
+                                                Command="{Binding Path=BindingContext.EditCourseCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
+                                                CommandParameter="{Binding .}"
+                                                Grid.Column="1"/>
+                                        <Button Text="Delete ✕"
+                                                Padding="8, 4"
+                                                VerticalOptions="Start"
+                                                CommandParameter="{Binding .}"
+                                                Grid.Column="2"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </ScrollView>
+                </Border>
+                <Button Text="Add Course"
+                        Grid.Row="3"/>
+            </Grid>
+            <Grid RowDefinitions="Auto, Auto, *, Auto"
+                  Grid.Column="3"
+                  RowSpacing="16"
+                  Margin="0, 16">
+                <Label Text="All Students"
+                       FontSize="36"
+                       HorizontalTextAlignment="Center"
+                       Margin="0, 0, 0, 16"
+                       TextDecorations="Underline"/>
+                <Entry Placeholder="Search"
+                       FontSize="16"
+                       ClearButtonVisibility="WhileEditing"
+                       IsSpellCheckEnabled="False"
+                       Grid.Row="1"/>
+                <Border Grid.Row="2"
+                        Padding="8">
+                    <ScrollView>
+                        <CollectionView ItemsSource="{Binding Students}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid ColumnDefinitions="*, Auto, Auto"
+                                          ColumnSpacing="8"
+                                          Margin="0, 4">
+                                        <Label Text="{Binding .}"
+                                               VerticalOptions="Center"/>
+                                        <Button Text="Edit ✎"
+                                                Padding="8, 4"
+                                                VerticalOptions="Start"
+                                                CommandParameter="{Binding .}"
+                                                Grid.Column="1"/>
+                                        <Button Text="Delete ✕"
+                                                Padding="8, 4"
+                                                VerticalOptions="Start"
+                                                CommandParameter="{Binding .}"
+                                                Grid.Column="2"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </ScrollView>
+                </Border>
+                <Button Text="Add Student"
+                        Grid.Row="3"/>
+            </Grid>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
