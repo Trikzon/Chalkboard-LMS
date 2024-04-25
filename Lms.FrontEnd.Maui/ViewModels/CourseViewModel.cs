@@ -6,7 +6,7 @@ using Lms.Library.Services;
 
 namespace Lms.FrontEnd.Maui.ViewModels;
 
-public sealed class CourseViewModel(Course course, Person? student) : INotifyPropertyChanged
+public sealed class CourseViewModel(Course course, Person? student=null) : INotifyPropertyChanged
 {
     public Course Course => course;
     
@@ -46,18 +46,18 @@ public sealed class CourseViewModel(Course course, Person? student) : INotifyPro
     
     public ICommand RemoveStudentCommand => new Command<Person>(RemoveStudent);
     
-    private void RemoveStudent(Person student)
-    {
-        Roster.Unenroll(student);
-        OnPropertyChanged(nameof(Roster));
-    }
-
     public void Update()
     {
         Roster.Update();
         OnPropertyChanged(nameof(Roster));
     }
     
+    private void RemoveStudent(Person student)
+    {
+        Roster.Unenroll(student);
+        OnPropertyChanged(nameof(Roster));
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null)

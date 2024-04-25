@@ -1,3 +1,5 @@
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Lms.FrontEnd.Maui.Views;
 using Lms.Library.Models;
@@ -5,27 +7,52 @@ using Lms.Library.Services;
 
 namespace Lms.FrontEnd.Maui.ViewModels;
 
-internal class InstructorPageViewModel
+internal sealed class InstructorPageViewModel : INotifyPropertyChanged
 {
-    public List<CourseViewModel> Courses { get; }
-    public IReadOnlyList<Person> Students { get; }
+    public IReadOnlyList<Course> Courses { get; private set; }
+    public IReadOnlyList<Person> Students { get; private set; }
 
-    public ICommand EditCourseCommand { get; }
-    
     public InstructorPageViewModel()
     {
-        Courses = CourseService.Current
-            .GetList()
-            .Select(course => new CourseViewModel(course, null))
-            .ToList();
-        
-        Students = PersonService.Current.GetList();
-        
-        EditCourseCommand = new Command<CourseViewModel>(OpenCoursePage);
+        Update();
     }
     
-    private async void OpenCoursePage(CourseViewModel viewModel)
+    public void Update()
     {
-        await Shell.Current.Navigation.PushAsync(new CoursePage(viewModel));
+        Courses = CourseService.Current.GetList();
+        OnPropertyChanged(nameof(Courses));
+        Students = PersonService.Current.GetList();
+        OnPropertyChanged(nameof(Students));
+    }
+    
+    public void AddCourse(Course course)
+    {
+        CourseService.Current.AddCourse(course);
+        Update();
+    }
+
+    public void DeleteCourse(Course course)
+    {
+        CourseService.Current.RemoveCourse(course);
+        Update();
+    }
+    
+    public void AddStudent(Person student)
+    {
+        PersonService.Current.AddPerson(student);
+        Update();
+    }
+    
+    public void DeleteStudent(Person student)
+    {
+        PersonService.Current.RemovePerson(student);
+        Update();
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

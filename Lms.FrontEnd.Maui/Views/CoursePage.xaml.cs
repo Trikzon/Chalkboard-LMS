@@ -5,10 +5,10 @@ namespace Lms.FrontEnd.Maui.Views;
 
 public partial class CoursePage : ContentPage
 {
-    public CoursePage(CourseViewModel viewModel)
+    public CoursePage(Course course)
     {
         InitializeComponent();
-        BindingContext = viewModel;
+        BindingContext = new CourseViewModel(course);
     }
 
     protected override void OnNavigatedTo(NavigatedToEventArgs args)

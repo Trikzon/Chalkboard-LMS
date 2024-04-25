@@ -19,6 +19,7 @@ public class PersonService
 
     public void RemovePerson(Person person)
     {
+        // TODO: Remove the person from all courses enrolled in.
         _people.Remove(person);
     }
 
