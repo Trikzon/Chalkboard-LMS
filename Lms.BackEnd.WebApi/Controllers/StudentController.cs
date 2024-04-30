@@ -22,25 +22,26 @@ public class StudentController(StudentService service) : ControllerBase
         return CreatedAtAction(
             nameof(GetStudent), 
             routeValues: new { studentId = student.Id }, 
-            value: new StudentResponse(student.Id, student.Name, student.Classification)
+            value: student
         );
     }
     
-    [HttpGet("students")]
-    public IActionResult GetStudent([FromQuery] Guid? studentId)
+    [HttpGet("/students")]
+    public IActionResult GetStudent()
     {
-        if (studentId is null)
-        {
-            return Ok(service.GetStudents().Select(student => new StudentResponse(student.Id, student.Name, student.Classification)));
-        }
-        
-        var student = service.GetStudent(studentId.Value);
+        return Ok(service.GetStudents());
+    }
+    
+    [HttpGet("/students/{studentId:guid}")]
+    public IActionResult GetStudent(Guid studentId)
+    {
+        var student = service.GetStudent(studentId);
         if (student is null)
         {
             return NotFound();
         }
         
-        return Ok(new StudentResponse(student.Id, student.Name, student.Classification));
+        return Ok(student);
     }
     
     [HttpPut("/students/{studentId:guid}")]

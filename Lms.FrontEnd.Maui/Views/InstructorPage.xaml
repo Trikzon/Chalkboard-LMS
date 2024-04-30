@@ -56,6 +56,53 @@
                         Clicked="AddCourse_OnClicked"
                         Grid.Row="3"/>
             </Grid>
+            
+            <Grid RowDefinitions="Auto, Auto, *, Auto"
+                  Grid.Column="3"
+                  RowSpacing="16"
+                  Margin="0, 16">
+                <Label Text="All Students"
+                       FontSize="36"
+                       HorizontalTextAlignment="Center"
+                       TextDecorations="Underline"/>
+                <Entry Placeholder="Search"
+                       FontSize="16"
+                       ClearButtonVisibility="WhileEditing"
+                       IsSpellCheckEnabled="False"
+                       Grid.Row="1"/>
+                <Border Grid.Row="2"
+                        Padding="8">
+                    <ScrollView>
+                        <CollectionView ItemsSource="{Binding Students}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:Student">
+                                    <Grid ColumnDefinitions="*, Auto, Auto"
+                                          ColumnSpacing="8"
+                                          Margin="0, 4">
+                                        <Label Text="{Binding Name}"
+                                               VerticalOptions="Center"/>
+                                        <Button Text="Edit ✎"
+                                                Padding="8, 4"
+                                                VerticalOptions="Center"
+                                                Command="{Binding Path=EditStudentCommand, Source={RelativeSource AncestorType={x:Type views:InstructorPage}}}"
+                                                CommandParameter="{Binding}"
+                                                Grid.Column="1"/>
+                                        <Button Text="Delete ✕"
+                                                Padding="8, 4"
+                                                VerticalOptions="Center"
+                                                Command="{Binding Path=DeleteStudentCommand, Source={RelativeSource AncestorType={x:Type views:InstructorPage}}}"
+                                                CommandParameter="{Binding}"
+                                                Grid.Column="2"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </ScrollView>
+                </Border>
+                <Button Text="Add Student"
+                        Clicked="AddStudent_OnClicked"
+                        Grid.Row="3"/>
+            </Grid>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

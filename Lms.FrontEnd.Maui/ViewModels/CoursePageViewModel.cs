@@ -61,7 +61,7 @@ public sealed class CoursePageViewModel : INotifyPropertyChanged
     
     public async Task Save()
     {
-        await CourseService.Current.UpdateCourseAsync(_courseId, new UpdateCourseRequest(Name, Code, Description));
+        await CourseService.Current.UpdateCourseAsync(_courseId, Name, Code, Description);
     }
     
     public event PropertyChangedEventHandler? PropertyChanged;

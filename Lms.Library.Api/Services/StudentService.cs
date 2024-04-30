@@ -5,47 +5,34 @@ using Refit;
 
 namespace Lms.Library.Api.Services;
 
-public class CourseService
+public class StudentService
 {
-    private static CourseService? _instance;
+    private static StudentService? _instance;
     private static readonly object Lock = new();
-
-    public static CourseService Current
+    
+    public static StudentService Current
     {
         get
         {
             lock (Lock)
             {
-                return _instance ??= new CourseService("http://localhost:5169");
+                return _instance ??= new StudentService(ApiUtils.HostUrl);
             }
         }
     }
-
-    private readonly ICoursesApi _api;
-
-    private CourseService(string hostUrl)
+    
+    private readonly IStudentsApi _api;
+    
+    private StudentService(string hostUrl)
     {
-        _api = RestService.For<ICoursesApi>(hostUrl);
+        _api = RestService.For<IStudentsApi>(hostUrl);
     }
     
-    public async Task<Course?> CreateCourseAsync(string name, string course, string? description = null)
+    public async Task<Student?> CreateStudentAsync(string name, Classification classification)
     {
         try
         {
-            return await _api.CreateCourseAsync(new CreateCourseRequest(name, course, description));
-        }
-        catch (ApiException exception)
-        {
-            ApiUtils.HandleApiException(exception);
-            return null;
-        }
-    }
-
-    public async Task<IEnumerable<Course>?> GetCoursesAsync()
-    {
-        try
-        {
-            return await _api.GetCoursesAsync();
+            return await _api.CreateStudentAsync(new CreateStudentRequest(name, classification));
         }
         catch (ApiException exception)
         {
@@ -54,11 +41,11 @@ public class CourseService
         }
     }
     
-    public async Task<Course?> GetCourseAsync(Guid courseId)
+    public async Task<IEnumerable<Student>?> GetStudentsAsync()
     {
         try
         {
-            return await _api.GetCourseAsync(courseId);
+            return await _api.GetStudentsAsync();
         }
         catch (ApiException exception)
         {
@@ -67,11 +54,24 @@ public class CourseService
         }
     }
     
-    public async Task UpdateCourseAsync(Guid courseId, string name, string code, string? description = "")
+    public async Task<Student?> GetStudentAsync(Guid studentId)
     {
         try
         {
-            await _api.UpdateCourseAsync(courseId, new UpdateCourseRequest(name, code, description));
+            return await _api.GetStudentAsync(studentId);
+        }
+        catch (ApiException exception)
+        {
+            ApiUtils.HandleApiException(exception);
+            return null;
+        }
+    }
+    
+    public async Task UpdateStudentAsync(Guid studentId, string name, Classification classification)
+    {
+        try
+        {
+            await _api.UpdateStudentAsync(studentId, new UpdateStudentRequest(name, classification));
         }
         catch (ApiException exception)
         {
@@ -79,11 +79,11 @@ public class CourseService
         }
     }
     
-    public async Task DeleteCourseAsync(Guid courseId)
+    public async Task DeleteStudentAsync(Guid studentId)
     {
         try
         {
-            await _api.DeleteCourseAsync(courseId);
+            await _api.DeleteStudentAsync(studentId);
         }
         catch (ApiException exception)
         {
