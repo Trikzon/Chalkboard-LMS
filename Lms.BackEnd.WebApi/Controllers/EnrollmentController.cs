@@ -7,46 +7,33 @@ namespace Lms.BackEnd.WebApi.Controllers;
 [ApiController]
 public class EnrollmentController(EnrollmentService service) : ControllerBase
 {
-    [HttpPost("/enrollments")]
-    public IActionResult CreateEnrollment(CreateEnrollmentRequest request)
+    [HttpPost("/courses/{courseId:guid}/enrollments/{studentId:guid}")]
+    [HttpPost("/students/{studentId:guid}/enrollments/{courseId:guid}")]
+    public IActionResult CreateEnrollment(Guid studentId, Guid courseId)
     {
-        if (!service.CreateEnrollment(request.CourseId, request.StudentId))
+        if (!service.CreateEnrollment(courseId, studentId))
         {
             return BadRequest();
         }
 
-        return CreatedAtAction(
-            nameof(GetEnrollment),
-            routeValues: new { studentId = request.StudentId, courseId = request.CourseId },
-            value: new EnrollmentResponse(request.CourseId, request.StudentId)
-        );
-    }
-    
-    [HttpGet("/enrollments")]
-    public IActionResult GetEnrollment([FromQuery] Guid courseId, [FromQuery] Guid studentId)
-    {
-        if (!service.EnrollmentExists(courseId, studentId))
-        {
-            return NotFound();
-        }
-        
-        return Ok(new EnrollmentResponse(courseId, studentId));
+        return Ok();
     }
     
     [HttpGet("/students/{studentId:guid}/enrollments")]
     public IActionResult GetEnrolledCourses(Guid studentId)
     {
-        return Ok(service.GetEnrolledCourses(studentId).Select(courseId => new EnrollmentResponse(courseId, studentId)));
+        return Ok(service.GetEnrolledCourses(studentId));
     }
     
     [HttpGet("/courses/{courseId:guid}/enrollments")]
     public IActionResult GetEnrolledStudents(Guid courseId)
     {
-        return Ok(service.GetEnrolledStudents(courseId).Select(studentId => new EnrollmentResponse(courseId, studentId)));
+        return Ok(service.GetEnrolledStudents(courseId));
     }
     
-    [HttpDelete("/enrollments")]
-    public IActionResult DeleteEnrollment([FromQuery] Guid courseId, [FromQuery] Guid studentId)
+    [HttpDelete("/courses/{courseId:guid}/enrollments/{studentId:guid}")]
+    [HttpDelete("/students/{studentId:guid}/enrollments/{courseId:guid}")]
+    public IActionResult DeleteEnrollment(Guid studentId, Guid courseId)
     {
         service.DeleteEnrollment(courseId, studentId);
         

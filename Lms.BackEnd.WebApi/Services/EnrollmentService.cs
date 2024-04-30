@@ -1,3 +1,4 @@
+using Lms.Library.Models;
 using MySql.Data.MySqlClient;
 
 namespace Lms.BackEnd.WebApi.Services;
@@ -52,42 +53,63 @@ public class EnrollmentService(IConfiguration configuration)
         return (long)command.ExecuteScalar() > 0;
     }
     
-    public IEnumerable<Guid> GetEnrolledCourses(Guid studentId)
+    public IEnumerable<Course> GetEnrolledCourses(Guid studentId)
     {
         using var connection = new MySqlConnection(_connectionString);
         connection.Open();
         
-        const string query = "SELECT course_id FROM enrollments WHERE student_id = @studentId";
+        const string query = """
+                             SELECT courses.course_id, courses.name, courses.code, courses.description
+                             FROM courses
+                             JOIN enrollments
+                                ON courses.course_id = enrollments.course_id
+                                WHERE enrollments.student_id = @studentId
+                             """;
         using var command = new MySqlCommand(query, connection);
         command.Parameters.AddWithValue("@studentId", studentId);
         
         using var reader = command.ExecuteReader();
-        var courseIds = new List<Guid>();
+        var courses = new List<Course>();
         while (reader.Read())
         {
-            courseIds.Add(reader.GetGuid(0));
+            var id = reader.GetGuid(0);
+            var name = reader.GetString(1);
+            var code = reader.GetString(2);
+            var description = reader.GetString(3);
+            
+            courses.Add(new Course(id, name, code, description));
         }
         
-        return courseIds;
+        return courses;
     }
     
-    public IEnumerable<Guid> GetEnrolledStudents(Guid courseId)
+    public IEnumerable<Student> GetEnrolledStudents(Guid courseId)
     {
         using var connection = new MySqlConnection(_connectionString);
         connection.Open();
         
-        const string query = "SELECT student_id FROM enrollments WHERE course_id = @courseId";
+        const string query = """
+                             SELECT students.student_id, students.name, students.classification
+                             FROM students
+                             JOIN enrollments
+                                ON students.student_id = enrollments.student_id
+                                WHERE enrollments.course_id = @courseId
+                             """;
         using var command = new MySqlCommand(query, connection);
         command.Parameters.AddWithValue("@courseId", courseId);
         
         using var reader = command.ExecuteReader();
-        var studentIds = new List<Guid>();
+        var students = new List<Student>();
         while (reader.Read())
         {
-            studentIds.Add(reader.GetGuid(0));
+            var id = reader.GetGuid(0);
+            var name = reader.GetString(1);
+            var classification = Enum.Parse<Classification>(reader.GetString(2));
+            
+            students.Add(new Student(id, name, classification));
         }
         
-        return studentIds;
+        return students;
     }
     
     public void DeleteEnrollment(Guid courseId, Guid studentId)
