@@ -1,6 +1,6 @@
-using Lms.BackEnd.WebApi.Contracts;
-using Lms.BackEnd.WebApi.Models;
 using Lms.BackEnd.WebApi.Services;
+using Lms.Library.Contracts;
+using Lms.Library.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lms.BackEnd.WebApi.Controllers;
@@ -22,25 +22,26 @@ public class CourseController(CourseService service) : ControllerBase
         return CreatedAtAction(
             nameof(GetCourse), 
             routeValues: new { courseId = course.Id }, 
-            value: new CourseResponse(course.Id, course.Name, course.Code, course.Description)
+            value: course
         );
     }
     
     [HttpGet("/courses")]
-    public IActionResult GetCourse([FromQuery] Guid? courseId)
+    public IActionResult GetCourse()
     {
-        if (courseId is null)
-        {
-            return Ok(service.GetCourses().Select(course => new CourseResponse(course.Id, course.Name, course.Code, course.Description)));
-        }
-        
-        var course = service.GetCourse(courseId.Value);
+        return Ok(service.GetCourses());
+    }
+    
+    [HttpGet("/courses/{courseId:guid}")]
+    public IActionResult GetCourse(Guid courseId)
+    {
+        var course = service.GetCourse(courseId);
         if (course is null)
         {
             return NotFound();
         }
         
-        return Ok(new CourseResponse(course.Id, course.Name, course.Code, course.Description));
+        return Ok(course);
     }
     
     [HttpPut("/courses/{courseId:guid}")]

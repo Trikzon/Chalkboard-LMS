@@ -1,4 +1,4 @@
-namespace Lms.BackEnd.WebApi.Models;
+namespace Lms.Library.Models;
 
 public class Submission(Guid contentItemId, Guid studentId, string? content, DateTime submissionDate, float points)
 {

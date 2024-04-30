@@ -1,4 +1,4 @@
-namespace Lms.BackEnd.WebApi.Models;
+namespace Lms.Library.Models;
 
 public class Student(Guid id, string name, Classification classification)
 {

@@ -1,6 +1,6 @@
-using Lms.BackEnd.WebApi.Models;
+using Lms.Library.Models;
 
-namespace Lms.BackEnd.WebApi.Contracts;
+namespace Lms.Library.Contracts;
 
 public record CreateStudentRequest(
     string Name,

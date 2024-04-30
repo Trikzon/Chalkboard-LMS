@@ -1,4 +1,4 @@
-namespace Lms.BackEnd.WebApi.Contracts;
+namespace Lms.Library.Contracts;
 
 public record CreateCourseRequest(
     string Name,
@@ -7,13 +7,6 @@ public record CreateCourseRequest(
 );
 
 public record UpdateCourseRequest(
-    string Name,
-    string Code,
-    string? Description
-);
-
-public record CourseResponse(
-    Guid Id,
     string Name,
     string Code,
     string? Description

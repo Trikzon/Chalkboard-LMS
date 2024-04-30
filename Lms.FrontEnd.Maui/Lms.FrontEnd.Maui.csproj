@@ -51,11 +51,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="CommunityToolkit.Maui" Version="8.0.1" />
-        <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.14" />
-        <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.20" />
+        <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)"/>
+        <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)"/>
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0"/>
-        <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="8.0.3" />
     </ItemGroup>
 
     <ItemGroup>
@@ -65,27 +63,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Lms.Library.Api\Lms.Library.Api.csproj" />
       <ProjectReference Include="..\Lms.Library\Lms.Library.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <MauiXaml Update="Views\InstructorPage.xaml">
-        <SubType>Designer</SubType>
-      </MauiXaml>
-      <MauiXaml Update="Views\LoginPage.xaml">
-        <SubType>Designer</SubType>
-      </MauiXaml>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Update="Views\InstructorPage.xaml.cs">
-        <DependentUpon>InstructorPage.xaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\LoginPage.xaml.cs">
-        <DependentUpon>LoginPage.xaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
     </ItemGroup>
 
 </Project>

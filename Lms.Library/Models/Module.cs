@@ -1,15 +1,8 @@
 namespace Lms.Library.Models;
 
-public class Module
+public class Module(Guid id, Guid courseId, string name)
 {
-    public Guid Id { get; } = Guid.NewGuid();
-    public Guid CourseId { get; set; }
-    public string Name { get; set; } = "";
-    public string Description { get; set; } = "";
-    public List<Guid> Content { get; } = new();
-    
-    public override string ToString()
-    {
-        return $"{Name}";
-    }
+    public Guid Id { get; } = id;
+    public Guid CourseId { get; } = courseId;
+    public string Name { get; } = name;
 }

@@ -1,4 +1,4 @@
-namespace Lms.BackEnd.WebApi.Contracts;
+namespace Lms.Library.Contracts;
 
 public record CreateSubmissionRequest(
     string? Content,

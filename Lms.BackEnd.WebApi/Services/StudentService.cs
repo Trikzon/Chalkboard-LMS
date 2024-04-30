@@ -1,4 +1,4 @@
-using Lms.BackEnd.WebApi.Models;
+using Lms.Library.Models;
 using MySql.Data.MySqlClient;
 
 namespace Lms.BackEnd.WebApi.Services;

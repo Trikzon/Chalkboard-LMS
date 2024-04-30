@@ -1,17 +1,9 @@
 namespace Lms.Library.Models;
 
-public class Course
+public class Course(Guid id, string name, string code, string? description)
 {
-    public Guid Id { get; } = Guid.NewGuid();
-    public string Code { get; set; } = "";
-    public string Name { get; set; } = "";
-    public string Description { get; set; } = "";
-    public List<Guid> Roster { get; } = [];
-    public List<Guid> Assignments { get; } = [];
-    public List<Guid> Modules { get; } = [];
-
-    public override string ToString()
-    {
-        return $"({Code}) {Name}";
-    }
+    public Guid Id { get; } = id;
+    public string Name { get; } = name;
+    public string Code { get; } = code;
+    public string? Description { get; } = description;
 }

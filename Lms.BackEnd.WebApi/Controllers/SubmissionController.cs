@@ -1,6 +1,6 @@
-using Lms.BackEnd.WebApi.Contracts;
-using Lms.BackEnd.WebApi.Models;
 using Lms.BackEnd.WebApi.Services;
+using Lms.Library.Contracts;
+using Lms.Library.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lms.BackEnd.WebApi.Controllers;
