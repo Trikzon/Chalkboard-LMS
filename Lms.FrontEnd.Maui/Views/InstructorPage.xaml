@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:Lms.Library.Models;assembly=Lms.Library"
+             xmlns:views="clr-namespace:Lms.FrontEnd.Maui.Views"
+             xmlns:viewModels="clr-namespace:Lms.FrontEnd.Maui.ViewModels"
+             x:Class="Lms.FrontEnd.Maui.Views.InstructorPage"
+             x:DataType="viewModels:InstructorPageViewModel"
+             Title="Instructor">
+    <ContentPage.Content>
+        <Grid ColumnDefinitions="*, 5*, *, 5*, *">
+            <Grid RowDefinitions="Auto, Auto, *, Auto"
+                  Grid.Column="1"
+                  RowSpacing="16"
+                  Margin="0, 16">
+                <Label Text="All Courses"
+                       FontSize="36"
+                       HorizontalTextAlignment="Center"
+                       TextDecorations="Underline"/>
+                <Entry Placeholder="Search"
+                       FontSize="16"
+                       ClearButtonVisibility="WhileEditing"
+                       IsSpellCheckEnabled="False"
+                       Grid.Row="1"/>
+                <Border Grid.Row="2"
+                        Padding="8">
+                    <ScrollView>
+                        <CollectionView ItemsSource="{Binding Courses}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:Course">
+                                    <Grid ColumnDefinitions="*, Auto, Auto"
+                                          ColumnSpacing="8"
+                                          Margin="0, 4">
+                                        <Label Text="{Binding Name}"
+                                               VerticalOptions="Center"/>
+                                        <Button Text="Edit ✎"
+                                                Padding="8, 4"
+                                                VerticalOptions="Center"
+                                                Command="{Binding Path=EditCourseCommand, Source={RelativeSource AncestorType={x:Type views:InstructorPage}}}"
+                                                CommandParameter="{Binding}"
+                                                Grid.Column="1"/>
+                                        <Button Text="Delete ✕"
+                                                Padding="8, 4"
+                                                VerticalOptions="Center"
+                                                Command="{Binding Path=DeleteCourseCommand, Source={RelativeSource AncestorType={x:Type views:InstructorPage}}}"
+                                                CommandParameter="{Binding}"
+                                                Grid.Column="2"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </ScrollView>
+                </Border>
+                <Button Text="Add Course"
+                        Clicked="AddCourse_OnClicked"
+                        Grid.Row="3"/>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
