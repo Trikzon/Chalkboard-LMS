@@ -14,6 +14,6 @@ public partial class MainPage : ContentPage
 
     private async void Student_ButtonClicked(object? sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        await Shell.Current.Navigation.PushAsync(new StudentLoginPage());
     }
 }

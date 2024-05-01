@@ -2,12 +2,18 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:models="clr-namespace:Lms.Library.Models;assembly=Lms.Library"
              xmlns:views="clr-namespace:Lms.FrontEnd.Maui.Views"
              xmlns:viewModels="clr-namespace:Lms.FrontEnd.Maui.ViewModels"
              x:Class="Lms.FrontEnd.Maui.Views.CoursePage"
              x:DataType="viewModels:CoursePageViewModel"
              Title="{Binding Name}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <Grid ColumnDefinitions="*, 2*">
             <Border Padding="16">
@@ -31,6 +37,8 @@
                                 </Label.FormattedText>
                             </Label>
                             <Entry Text="{Binding Name, Mode=TwoWay}"
+                                   IsReadOnly="{Binding IsInstructor, Converter={StaticResource InvertedBoolConverter}}"
+                                   MaxLength="255"
                                    Grid.Column="1"/>
                         </Grid>
                         <Grid ColumnDefinitions="70, *"
@@ -44,6 +52,8 @@
                                 </Label.FormattedText>
                             </Label>
                             <Entry Text="{Binding Code, Mode=TwoWay}"
+                                   IsReadOnly="{Binding IsInstructor, Converter={StaticResource InvertedBoolConverter}}"
+                                   MaxLength="255"
                                    Grid.Column="1"/>
                         </Grid>
                         <Label VerticalOptions="Center"
@@ -58,6 +68,7 @@
                                 Grid.Row="3">
                             <ScrollView>
                                 <Editor Text="{Binding Description, Mode=TwoWay}"
+                                        IsReadOnly="{Binding IsInstructor, Converter={StaticResource InvertedBoolConverter}}"
                                         HeightRequest="100"/>
                             </ScrollView>
                         </Border>
@@ -65,6 +76,7 @@
                     
                     <Grid RowDefinitions="Auto, *, Auto"
                           Margin="0, 24, 0, 0"
+                          IsVisible="{Binding IsInstructor}"
                           Grid.Row="2">
                         <Label>
                             <Label.FormattedText>

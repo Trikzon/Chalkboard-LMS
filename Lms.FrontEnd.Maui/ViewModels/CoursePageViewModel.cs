@@ -12,6 +12,8 @@ public sealed class CoursePageViewModel : INotifyPropertyChanged
     private string _description = "";
     
     public Guid CourseId { get; }
+    
+    public Guid? StudentId { get; }
 
     public string Name
     {
@@ -44,10 +46,13 @@ public sealed class CoursePageViewModel : INotifyPropertyChanged
     }
     
     public IEnumerable<Student>? Roster { get; private set; }
+    
+    public bool IsInstructor => StudentId is null;
 
-    public CoursePageViewModel(Guid courseId)
+    public CoursePageViewModel(Guid courseId, Guid? studentId)
     {
         CourseId = courseId;
+        StudentId = studentId;
         
         Task.Run(async () =>
         {

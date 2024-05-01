@@ -8,12 +8,12 @@ public partial class CoursePage : ContentPage
 {
     public ICommand DeleteStudentEnrollmentCommand { get; }
     
-    public CoursePage(Guid courseId)
+    public CoursePage(Guid courseId, Guid? studentId = null)
     {
         DeleteStudentEnrollmentCommand = new Command<Student>(DeleteStudentEnrollment);
         
         InitializeComponent();
-        BindingContext = new CoursePageViewModel(courseId);
+        BindingContext = new CoursePageViewModel(courseId, studentId);
     }
 
     protected override async void OnNavigatedTo(NavigatedToEventArgs args)

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:Lms.Library.Models;assembly=Lms.Library"
+             xmlns:views="clr-namespace:Lms.FrontEnd.Maui.Views"
+             xmlns:viewModels="clr-namespace:Lms.FrontEnd.Maui.ViewModels"
+             x:Class="Lms.FrontEnd.Maui.Views.StudentPage"
+             x:DataType="viewModels:StudentPageViewModel"
+             Title="{Binding Name}">
+    <ContentPage.Content>
+        <Grid ColumnDefinitions="4*, 5*, 4*">
+            <Grid RowDefinitions="Auto, *, Auto"
+                  RowSpacing="16"
+                  Margin="0, 16"
+                  Grid.Column="1">
+                <Entry Placeholder="Search"
+                       ClearButtonVisibility="WhileEditing"
+                       IsSpellCheckEnabled="False"/>
+                <Border Padding="8"
+                        Grid.Row="1">
+                    <ScrollView>
+                        <CollectionView ItemsSource="{Binding EnrolledCourses}"
+                                        SelectedItem="{Binding SelectedCourse, Mode=TwoWay}"
+                                        SelectionChangedCommand="{Binding SelectionChangedCommand}"
+                                        SelectionMode="Single">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:Course">
+                                    <Label VerticalOptions="Center"
+                                           Margin="0, 8"
+                                           FontSize="24">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Name}"/>
+                                                <Span Text="{Binding Code, StringFormat=' ({0})'}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </ScrollView>
+                </Border>
+                <Button Text="Open Course"
+                        Pressed="OpenCourse_OnPressed"
+                        IsEnabled="{Binding IsCourseSelected}"
+                        Grid.Row="2"/>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

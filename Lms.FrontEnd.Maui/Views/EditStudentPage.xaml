@@ -20,7 +20,8 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Entry Text="{Binding Name, Mode=TwoWay}"/>
+                    <Entry Text="{Binding Name, Mode=TwoWay}"
+                           MaxLength="255"/>
                     <Label VerticalOptions="Center"
                            Margin="0, 16, 0, 0">
                         <Label.FormattedText>
