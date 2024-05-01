@@ -79,11 +79,11 @@ public class ModuleService
         }
     }
     
-    public async Task UpdateContentItemAsync(Guid moduleId, Guid contentItemId, UpdateContentItemRequest request)
+    public async Task UpdateContentItemAsync(Guid moduleId, Guid contentItemId, string name, string? content = null)
     {
         try
         {
-            await _api.UpdateContentItemAsync(moduleId, contentItemId, request);
+            await _api.UpdateContentItemAsync(moduleId, contentItemId, new UpdateContentItemRequest(name, content));
         }
         catch (ApiException exception)
         {

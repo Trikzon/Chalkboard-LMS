@@ -35,11 +35,6 @@ public sealed class StudentLoginPageViewModel : INotifyPropertyChanged
         }
     }
 
-    public StudentLoginPageViewModel()
-    {
-        Task.Run(UpdateAsync);
-    }
-
     public async Task UpdateAsync()
     {
         Students = await StudentService.Current.GetStudentsAsync();

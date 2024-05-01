@@ -52,8 +52,6 @@ public sealed class StudentPageViewModel : INotifyPropertyChanged
                 OnPropertyChanged(nameof(Name));
             }
         });
-
-        Task.Run(UpdateAsync);
     }
 
     public async Task UpdateAsync()

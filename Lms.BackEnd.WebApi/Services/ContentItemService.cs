@@ -61,22 +61,33 @@ public class ContentItemService(IConfiguration configuration)
         
         var moduleId = reader.GetGuid(0);
         var name = reader.GetString(1);
-        var content = reader.GetString(2);
+        var content = reader.IsDBNull(2) ? null : reader.GetString(2);
         
-        const string assignmentQuery = "SELECT total_available_points, due_date FROM assignments WHERE content_item_id = @id";
-        using var assignmentCommand = new MySqlCommand(assignmentQuery, connection);
-        assignmentCommand.Parameters.AddWithValue("@id", contentItemId);
-        
-        using var assignmentReader = assignmentCommand.ExecuteReader();
-        if (assignmentReader.Read())
-        {
-            var totalAvailablePoints = assignmentReader.GetDouble(0);
-            var dueDate = assignmentReader.GetDateTime(1);
-            
-            return new Assignment(contentItemId, moduleId, name, content, totalAvailablePoints, dueDate);
-        }
-
         return new ContentItem(contentItemId, moduleId, name, content);
+    }
+    
+    public Assignment? GetAssignment(Guid contentItemId)
+    {
+        using var connection = new MySqlConnection(_connectionString);
+        connection.Open();
+
+        const string query = "SELECT module_id, name, content, total_available_points, due_date FROM content_items JOIN assignments ON content_items.content_item_id = assignments.content_item_id WHERE content_items.content_item_id = @id";
+        using var command = new MySqlCommand(query, connection);
+        command.Parameters.AddWithValue("@id", contentItemId);
+        
+        using var reader = command.ExecuteReader();
+        if (!reader.Read())
+        {
+            return null;
+        }
+        
+        var moduleId = reader.GetGuid(0);
+        var name = reader.GetString(1);
+        var content = reader.IsDBNull(2) ? null : reader.GetString(2);
+        var totalAvailablePoints = reader.GetDouble(3);
+        var dueDate = reader.GetDateTime(4);
+        
+        return new Assignment(contentItemId, moduleId, name, content, totalAvailablePoints, dueDate);
     }
     
     public IEnumerable<ContentItem> GetContentItems(Guid moduleId)
@@ -123,7 +134,7 @@ public class ContentItemService(IConfiguration configuration)
         {
             var id = reader.GetGuid(0);
             var name = reader.GetString(1);
-            var content = reader.GetString(2);
+            var content = reader.IsDBNull(2) ? null : reader.GetString(2);
             var totalAvailablePoints = reader.GetDouble(3);
             var dueDate = reader.GetDateTime(4);
             

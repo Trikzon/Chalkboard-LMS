@@ -7,14 +7,14 @@ namespace Lms.FrontEnd.Maui.ViewModels;
 
 public sealed class CoursePageViewModel : INotifyPropertyChanged
 {
-    private readonly Guid? _studentId;
     private string _name = "";
     private string _code = "";
     private string _description = "";
     
     public Guid CourseId { get; }
+    public Guid? StudentId { get; }
 
-    public bool IsInstructor => _studentId is null;
+    public bool IsInstructor => StudentId is null;
 
     public string Name
     {
@@ -53,7 +53,7 @@ public sealed class CoursePageViewModel : INotifyPropertyChanged
     public CoursePageViewModel(Guid courseId, Guid? studentId)
     {
         CourseId = courseId;
-        _studentId = studentId;
+        StudentId = studentId;
         
         Task.Run(async () =>
         {
@@ -65,8 +65,6 @@ public sealed class CoursePageViewModel : INotifyPropertyChanged
                 Description = course.Description ?? "";
             }
         });
-
-        Task.Run(UpdateAsync);
     }
     
     public async Task UpdateAsync()

@@ -44,11 +44,6 @@ public sealed class InstructorPageViewModel : INotifyPropertyChanged
         }
     }
 
-    public InstructorPageViewModel()
-    {
-        Task.Run(UpdateAsync);
-    }
-
     public async Task UpdateAsync()
     {
         Courses = await CourseService.Current.GetCoursesAsync();

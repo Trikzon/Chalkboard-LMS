@@ -61,12 +61,19 @@ public class ContentItemController(ContentItemService service) : ControllerBase
             return NotFound();
         }
         
-        if (contentItem is Assignment assignment)
+        return Ok(contentItem);
+    }
+    
+    [HttpGet("/assignments/{contentItemId:guid}")]
+    public IActionResult GetAssignment(Guid contentItemId)
+    {
+        var assignment = service.GetAssignment(contentItemId);
+        if (assignment is null)
         {
-            return Ok(assignment);
+            return NotFound();
         }
         
-        return Ok(contentItem);
+        return Ok(assignment);
     }
     
     [HttpGet("/modules/{moduleId:guid}/content-items")]

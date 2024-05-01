@@ -177,7 +177,16 @@
                                                             <Button Text="Edit ✎"
                                                                     Padding="8, 4"
                                                                     VerticalOptions="Center"
+                                                                    Command="{Binding Path=EditContentItemCommand, Source={RelativeSource AncestorType={x:Type views:CoursePage}}}"
+                                                                    CommandParameter="{Binding}"
                                                                     IsVisible="{Binding IsInstructor, Source={RelativeSource AncestorType={x:Type viewModels:CoursePageViewModel}}}"
+                                                                    Grid.Column="1"/>
+                                                            <Button Text="Open Item"
+                                                                    Padding="8, 4"
+                                                                    VerticalOptions="Center"
+                                                                    Command="{Binding Path=EditContentItemCommand, Source={RelativeSource AncestorType={x:Type views:CoursePage}}}"
+                                                                    CommandParameter="{Binding}"
+                                                                    IsVisible="{Binding IsInstructor, Converter={StaticResource InvertedBoolConverter}, Source={RelativeSource AncestorType={x:Type viewModels:CoursePageViewModel}}}"
                                                                     Grid.Column="1"/>
                                                             <Button Text="Delete ✕"
                                                                     Padding="8, 4"
