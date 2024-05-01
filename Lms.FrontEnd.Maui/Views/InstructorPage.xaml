@@ -19,7 +19,6 @@
                        HorizontalTextAlignment="Center"
                        TextDecorations="Underline"/>
                 <Entry Placeholder="Search"
-                       FontSize="16"
                        ClearButtonVisibility="WhileEditing"
                        IsSpellCheckEnabled="False"
                        Grid.Row="1"/>
@@ -66,7 +65,6 @@
                        HorizontalTextAlignment="Center"
                        TextDecorations="Underline"/>
                 <Entry Placeholder="Search"
-                       FontSize="16"
                        ClearButtonVisibility="WhileEditing"
                        IsSpellCheckEnabled="False"
                        Grid.Row="1"/>

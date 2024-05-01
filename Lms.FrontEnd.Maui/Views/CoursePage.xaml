@@ -77,16 +77,33 @@
                                 Margin="0, 8"
                                 Grid.Row="1">
                             <ScrollView>
-                                <CollectionView>
-                                    
+                                <CollectionView ItemsSource="{Binding Roster}">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid ColumnDefinitions="*, Auto"
+                                                  Margin="0, 4">
+                                                <Label Text="{Binding Name}"
+                                                       VerticalOptions="Center"/>
+                                                <Button Text="Remove ✕"
+                                                        Padding="8, 4"
+                                                        VerticalOptions="Center"
+                                                        Command="{Binding Path=DeleteStudentEnrollmentCommand, Source={RelativeSource AncestorType={x:Type views:CoursePage}}}"
+                                                        CommandParameter="{Binding}"
+                                                        Grid.Column="1"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
                                 </CollectionView>
                             </ScrollView>
                         </Border>
-                        <Button Text="Add Students"
+                        <Button Text="Enroll Students"
+                                Clicked="EnrollStudents_OnClicked"
                                 Grid.Row="2"/>
                     </Grid>
                 </Grid>
             </Border>
+            <ScrollView Grid.Column="1">
+            </ScrollView>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

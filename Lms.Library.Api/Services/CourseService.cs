@@ -79,6 +79,43 @@ public class CourseService
         }
     }
     
+    public async Task CreateEnrollmentAsync(Guid courseId, Guid studentId)
+    {
+        try
+        {
+            await _api.CreateEnrollmentAsync(courseId, studentId);
+        }
+        catch (ApiException exception)
+        {
+            ApiUtils.HandleApiException(exception);
+        }
+    }
+    
+    public async Task<IEnumerable<Student>?> GetEnrolledStudentsAsync(Guid courseId)
+    {
+        try
+        {
+            return await _api.GetEnrolledStudentsAsync(courseId);
+        }
+        catch (ApiException exception)
+        {
+            ApiUtils.HandleApiException(exception);
+            return null;
+        }
+    }
+    
+    public async Task DeleteEnrollmentAsync(Guid courseId, Guid studentId)
+    {
+        try
+        {
+            await _api.DeleteEnrollmentAsync(courseId, studentId);
+        }
+        catch (ApiException exception)
+        {
+            ApiUtils.HandleApiException(exception);
+        }
+    }
+    
     public async Task DeleteCourseAsync(Guid courseId)
     {
         try

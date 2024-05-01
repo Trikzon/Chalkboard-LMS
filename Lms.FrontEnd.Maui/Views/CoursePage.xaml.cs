@@ -1,11 +1,17 @@
+using System.Windows.Input;
 using Lms.FrontEnd.Maui.ViewModels;
+using Lms.Library.Models;
 
 namespace Lms.FrontEnd.Maui.Views;
 
 public partial class CoursePage : ContentPage
 {
+    public ICommand DeleteStudentEnrollmentCommand { get; }
+    
     public CoursePage(Guid courseId)
     {
+        DeleteStudentEnrollmentCommand = new Command<Student>(DeleteStudentEnrollment);
+        
         InitializeComponent();
         BindingContext = new CoursePageViewModel(courseId);
     }
@@ -20,5 +26,15 @@ public partial class CoursePage : ContentPage
     {
         base.OnNavigatingFrom(args);
         await ((CoursePageViewModel)BindingContext).Save();
+    }
+    
+    private async void DeleteStudentEnrollment(Student student)
+    {
+        await ((CoursePageViewModel)BindingContext).DeleteStudentEnrollment(student);
+    }
+
+    private async void EnrollStudents_OnClicked(object? sender, EventArgs e)
+    {
+        await Shell.Current.Navigation.PushAsync(new EnrollStudentsPage(((CoursePageViewModel)BindingContext).CourseId));
     }
 }

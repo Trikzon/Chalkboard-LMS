@@ -20,4 +20,13 @@ public interface ICoursesApi
     
     [Delete("/courses/{courseId}")]
     Task DeleteCourseAsync(Guid courseId);
+    
+    [Post("/courses/{courseId}/enrollments/{studentId}")]
+    Task CreateEnrollmentAsync(Guid courseId, Guid studentId);
+    
+    [Get("/courses/{courseId}/enrollments")]
+    Task<IEnumerable<Student>> GetEnrolledStudentsAsync(Guid courseId);
+    
+    [Delete("/courses/{courseId}/enrollments/{studentId}")]
+    Task DeleteEnrollmentAsync(Guid courseId, Guid studentId);
 }

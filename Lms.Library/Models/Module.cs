@@ -1,8 +1,7 @@
 namespace Lms.Library.Models;
 
-public class Module(Guid id, Guid courseId, string name)
-{
-    public Guid Id { get; } = id;
-    public Guid CourseId { get; } = courseId;
-    public string Name { get; } = name;
-}
+public record Module(
+    Guid Id,
+    Guid CourseId,
+    string Name
+);
