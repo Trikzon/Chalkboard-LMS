@@ -16,7 +16,7 @@ public class CourseService
         {
             lock (Lock)
             {
-                return _instance ??= new CourseService("http://localhost:5169");
+                return _instance ??= new CourseService(ApiUtils.HostUrl);
             }
         }
     }
@@ -121,6 +121,44 @@ public class CourseService
         try
         {
             await _api.DeleteCourseAsync(courseId);
+        }
+        catch (ApiException exception)
+        {
+            ApiUtils.HandleApiException(exception);
+        }
+    }
+    
+    public async Task<Module?> CreateModuleAsync(Guid courseId, string name)
+    {
+        try
+        {
+            return await _api.CreateModuleAsync(courseId, new CreateModuleRequest(name));
+        }
+        catch (ApiException exception)
+        {
+            ApiUtils.HandleApiException(exception);
+            return null;
+        }
+    }
+    
+    public async Task<IEnumerable<Module>?> GetModulesAsync(Guid courseId)
+    {
+        try
+        {
+            return await _api.GetModulesAsync(courseId);
+        }
+        catch (ApiException exception)
+        {
+            ApiUtils.HandleApiException(exception);
+            return null;
+        }
+    }
+    
+    public async Task UpdateModuleAsync(Guid courseId, Guid moduleId, string name)
+    {
+        try
+        {
+            await _api.UpdateModuleAsync(courseId, moduleId, new UpdateModuleRequest(name));
         }
         catch (ApiException exception)
         {

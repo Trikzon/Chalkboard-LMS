@@ -7,13 +7,14 @@ namespace Lms.FrontEnd.Maui.ViewModels;
 
 public sealed class CoursePageViewModel : INotifyPropertyChanged
 {
+    private readonly Guid? _studentId;
     private string _name = "";
     private string _code = "";
     private string _description = "";
     
     public Guid CourseId { get; }
-    
-    public Guid? StudentId { get; }
+
+    public bool IsInstructor => _studentId is null;
 
     public string Name
     {
@@ -47,12 +48,12 @@ public sealed class CoursePageViewModel : INotifyPropertyChanged
     
     public IEnumerable<Student>? Roster { get; private set; }
     
-    public bool IsInstructor => StudentId is null;
+    public IEnumerable<ModuleViewModel>? Modules { get; private set; }
 
     public CoursePageViewModel(Guid courseId, Guid? studentId)
     {
         CourseId = courseId;
-        StudentId = studentId;
+        _studentId = studentId;
         
         Task.Run(async () =>
         {
@@ -72,6 +73,8 @@ public sealed class CoursePageViewModel : INotifyPropertyChanged
     {
         Roster = await CourseService.Current.GetEnrolledStudentsAsync(CourseId);
         OnPropertyChanged(nameof(Roster));
+        Modules = (await CourseService.Current.GetModulesAsync(CourseId) ?? []).Select(m => new ModuleViewModel(m.Id));
+        OnPropertyChanged(nameof(Modules));
     }
     
     public async Task SaveChangesAsync()
@@ -82,6 +85,37 @@ public sealed class CoursePageViewModel : INotifyPropertyChanged
     public async Task DeleteStudentEnrollmentAsync(Student student)
     {
         await CourseService.Current.DeleteEnrollmentAsync(CourseId, student.Id);
+        await UpdateAsync();
+    }
+    
+    public async Task CreateModuleAsync(string name)
+    {
+        await CourseService.Current.CreateModuleAsync(CourseId, name);
+        await UpdateAsync();
+    }
+
+    public async Task UpdateModuleNameAsync(ModuleViewModel module, string name)
+    {
+        await CourseService.Current.UpdateModuleAsync(CourseId, module.ModuleId, name);
+        await UpdateAsync();
+    }
+
+    public async Task DeleteModuleAsync(ModuleViewModel module)
+    {
+        await ModuleService.Current.DeleteModuleAsync(module.ModuleId);
+        await UpdateAsync();
+    }
+    
+    public async Task<ContentItem?> CreateContentItemAsync(ModuleViewModel module)
+    {
+        var contentItem = await ModuleService.Current.CreateContentItemAsync(module.ModuleId, "New Item");
+        await UpdateAsync();
+        return contentItem;
+    }
+    
+    public async Task DeleteContentItemAsync(ContentItem contentItem)
+    {
+        await ContentItemService.Current.DeleteContentItemAsync(contentItem.Id);
         await UpdateAsync();
     }
     

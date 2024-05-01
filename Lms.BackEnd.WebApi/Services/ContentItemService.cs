@@ -94,27 +94,43 @@ public class ContentItemService(IConfiguration configuration)
         {
             var id = reader.GetGuid(0);
             var name = reader.GetString(1);
-            var content = reader.GetString(2);
+            var content = reader.IsDBNull(2) ? null : reader.GetString(2);
             
-            const string assignmentQuery = "SELECT total_available_points, due_date FROM assignments WHERE content_item_id = @id";
-            using var assignmentCommand = new MySqlCommand(assignmentQuery, connection);
-            assignmentCommand.Parameters.AddWithValue("@id", id);
-            
-            using var assignmentReader = assignmentCommand.ExecuteReader();
-            if (assignmentReader.Read())
-            {
-                var totalAvailablePoints = assignmentReader.GetDouble(0);
-                var dueDate = assignmentReader.GetDateTime(1);
-                
-                contentItems.Add(new Assignment(id, moduleId, name, content, totalAvailablePoints, dueDate));
-            }
-            else
-            {
-                contentItems.Add(new ContentItem(id, moduleId, name, content));
-            }
+            contentItems.Add(new ContentItem(id, moduleId, name, content));
         }
         
         return contentItems;
+    }
+
+    public IEnumerable<Assignment> GetAssignments(Guid moduleId)
+    {
+        using var connection = new MySqlConnection(_connectionString);
+        connection.Open();
+        
+        const string query = """
+                             SELECT content_items.content_item_id, name, content, total_available_points, due_date
+                             FROM content_items
+                             JOIN assignments
+                                ON content_items.content_item_id = assignments.content_item_id
+                                WHERE module_id = @moduleId ORDER BY name
+                             """;
+        using var command = new MySqlCommand(query, connection);
+        command.Parameters.AddWithValue("@moduleId", moduleId);
+        
+        using var reader = command.ExecuteReader();
+        var assignments = new List<Assignment>();
+        while (reader.Read())
+        {
+            var id = reader.GetGuid(0);
+            var name = reader.GetString(1);
+            var content = reader.GetString(2);
+            var totalAvailablePoints = reader.GetDouble(3);
+            var dueDate = reader.GetDateTime(4);
+            
+            assignments.Add(new Assignment(id, moduleId, name, content, totalAvailablePoints, dueDate));
+        }
+        
+        return assignments;
     }
     
     public bool UpdateContentItem(ContentItem contentItem)

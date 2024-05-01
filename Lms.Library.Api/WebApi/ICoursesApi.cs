@@ -29,4 +29,13 @@ public interface ICoursesApi
     
     [Delete("/courses/{courseId}/enrollments/{studentId}")]
     Task DeleteEnrollmentAsync(Guid courseId, Guid studentId);
+    
+    [Post("/courses/{courseId}/modules")]
+    Task<Module> CreateModuleAsync(Guid courseId, CreateModuleRequest request);
+    
+    [Get("/courses/{courseId}/modules")]
+    Task<IEnumerable<Module>> GetModulesAsync(Guid courseId);
+    
+    [Put("/courses/{courseId}/modules/{moduleId}")]
+    Task UpdateModuleAsync(Guid courseId, Guid moduleId, UpdateModuleRequest request);
 }

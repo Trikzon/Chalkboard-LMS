@@ -26,7 +26,7 @@ public class ContentItemController(ContentItemService service) : ControllerBase
             actionName: nameof(GetContentItem),
             controllerName: "ContentItem",
             routeValues: new { contentItemId = contentItem.Id },
-            value: new ContentItemResponse(contentItem.Id, contentItem.ModuleId, contentItem.Name, contentItem.Content)
+            value: contentItem
         );
     }
     
@@ -48,7 +48,7 @@ public class ContentItemController(ContentItemService service) : ControllerBase
             actionName: nameof(GetContentItem),
             controllerName: "ContentItem",
             routeValues: new { contentItemId = assignment.Id },
-            value: new AssignmentResponse(assignment.Id, assignment.ModuleId, assignment.Name, assignment.Content, assignment.TotalAvailablePoints, assignment.DueDate)
+            value: assignment
         );
     }
     
@@ -63,24 +63,22 @@ public class ContentItemController(ContentItemService service) : ControllerBase
         
         if (contentItem is Assignment assignment)
         {
-            return Ok(new AssignmentResponse(assignment.Id, assignment.ModuleId, assignment.Name, assignment.Content, assignment.TotalAvailablePoints, assignment.DueDate));
+            return Ok(assignment);
         }
         
-        return Ok(new ContentItemResponse(contentItem.Id, contentItem.ModuleId, contentItem.Name, contentItem.Content));
+        return Ok(contentItem);
     }
     
     [HttpGet("/modules/{moduleId:guid}/content-items")]
     public IActionResult GetContentItems(Guid moduleId)
     {
-        return Ok(service.GetContentItems(moduleId).Select(contentItem =>
-        {
-            if (contentItem is Assignment assignment)
-            {
-                return new AssignmentResponse(assignment.Id, assignment.ModuleId, assignment.Name, assignment.Content, assignment.TotalAvailablePoints, assignment.DueDate);
-            }
-            
-            return new ContentItemResponse(contentItem.Id, contentItem.ModuleId, contentItem.Name, contentItem.Content);
-        }));
+        return Ok(service.GetContentItems(moduleId));
+    }
+    
+    [HttpGet("modules/{moduleId:guid}/assignments")]
+    public IActionResult GetAssignments(Guid moduleId)
+    {
+        return Ok(service.GetAssignments(moduleId));
     }
     
     [HttpPut("/modules/{moduleId:guid}/content-items/{contentItemId:guid}")]

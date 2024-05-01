@@ -26,7 +26,7 @@ public class ModuleController(ModuleService service) : ControllerBase
             actionName: nameof(GetModule),
             controllerName: "Module",
             routeValues: new { moduleId = module.Id },
-            value: new ModuleResponse(module.Id, module.CourseId, module.Name)
+            value: module
         );
     }
     
@@ -39,13 +39,13 @@ public class ModuleController(ModuleService service) : ControllerBase
             return NotFound();
         }
         
-        return Ok(new ModuleResponse(module.Id, module.CourseId, module.Name));
+        return Ok(module);
     }
     
     [HttpGet("/courses/{courseId:guid}/modules")]
     public IActionResult GetModules(Guid courseId)
     {
-        return Ok(service.GetModules(courseId).Select(module => new ModuleResponse(module.Id, module.CourseId, module.Name)));
+        return Ok(service.GetModules(courseId));
     }
     
     [HttpPut("/courses/{courseId:guid}/modules/{moduleId:guid}")]

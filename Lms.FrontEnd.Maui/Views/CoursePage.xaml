@@ -120,8 +120,89 @@
                     </Grid>
                 </Grid>
             </Border>
-            <ScrollView Grid.Column="1">
-            </ScrollView>
+            <Grid RowDefinitions="*, Auto"
+                  Grid.Column="1">
+                <ScrollView Padding="8">
+                    <Grid RowDefinitions="Auto, *, Auto">
+                        <StackLayout BindableLayout.ItemsSource="{Binding Modules}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="viewModels:ModuleViewModel">
+                                    <Border Padding="8"
+                                            Margin="8">
+                                        <Grid RowDefinitions="Auto, Auto">
+                                            <Grid ColumnDefinitions="*, Auto, Auto, Auto, Auto"
+                                                  ColumnSpacing="8"
+                                                  Padding="16">
+                                                <Label Text="{Binding Name}"
+                                                       FontSize="24"
+                                                       VerticalTextAlignment="Center"
+                                                       TextDecorations="Underline"/>
+                                                <Button Text="Create Item"
+                                                        Padding="8, 4"
+                                                        VerticalOptions="Center"
+                                                        Command="{Binding Path=CreateContentItemCommand, Source={RelativeSource AncestorType={x:Type views:CoursePage}}}"
+                                                        CommandParameter="{Binding}"
+                                                        IsVisible="{Binding IsInstructor, Source={RelativeSource AncestorType={x:Type viewModels:CoursePageViewModel}}}"
+                                                        Grid.Column="1"/>
+                                                <Button Text="Create Assignment"
+                                                        Padding="8, 4"
+                                                        VerticalOptions="Center"
+                                                        IsVisible="{Binding IsInstructor, Source={RelativeSource AncestorType={x:Type viewModels:CoursePageViewModel}}}"
+                                                        Grid.Column="2"/>
+                                                <Button Text="Edit ✎"
+                                                        Padding="8, 4"
+                                                        VerticalOptions="Center"
+                                                        Command="{Binding Path=EditModuleNameCommand, Source={RelativeSource AncestorType={x:Type views:CoursePage}}}"
+                                                        CommandParameter="{Binding}"
+                                                        IsVisible="{Binding IsInstructor, Source={RelativeSource AncestorType={x:Type viewModels:CoursePageViewModel}}}"
+                                                        Grid.Column="3"/>
+                                                <Button Text="Delete ✕"
+                                                        Padding="8, 4"
+                                                        VerticalOptions="Center"
+                                                        Command="{Binding Path=DeleteModuleCommand, Source={RelativeSource AncestorType={x:Type views:CoursePage}}}"
+                                                        CommandParameter="{Binding}"
+                                                        IsVisible="{Binding IsInstructor, Source={RelativeSource AncestorType={x:Type viewModels:CoursePageViewModel}}}"
+                                                        Grid.Column="4"/>
+                                            </Grid>
+                                            <CollectionView ItemsSource="{Binding ContentItems}"
+                                                            Margin="32, 0"
+                                                            Grid.Row="1">
+                                                <CollectionView.ItemTemplate>
+                                                    <DataTemplate x:DataType="models:ContentItem">
+                                                        <Grid ColumnDefinitions="*, Auto, Auto"
+                                                              ColumnSpacing="8"
+                                                              Padding="0, 8">
+                                                            <Label Text="{Binding Name}"
+                                                                   VerticalOptions="Center"/>
+                                                            <Button Text="Edit ✎"
+                                                                    Padding="8, 4"
+                                                                    VerticalOptions="Center"
+                                                                    IsVisible="{Binding IsInstructor, Source={RelativeSource AncestorType={x:Type viewModels:CoursePageViewModel}}}"
+                                                                    Grid.Column="1"/>
+                                                            <Button Text="Delete ✕"
+                                                                    Padding="8, 4"
+                                                                    VerticalOptions="Center"
+                                                                    Command="{Binding Path=DeleteContentItemCommand, Source={RelativeSource AncestorType={x:Type views:CoursePage}}}"
+                                                                    CommandParameter="{Binding}"
+                                                                    IsVisible="{Binding IsInstructor, Source={RelativeSource AncestorType={x:Type viewModels:CoursePageViewModel}}}"
+                                                                    Grid.Column="2"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </CollectionView.ItemTemplate>
+                                            </CollectionView>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
+                    </Grid>
+                </ScrollView>
+                <Button Text="Create Module"
+                        Clicked="CreateModule_OnClicked"
+                        Margin="16"
+                        IsVisible="{Binding IsInstructor}"
+                        Grid.Row="1"/>
+            </Grid>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

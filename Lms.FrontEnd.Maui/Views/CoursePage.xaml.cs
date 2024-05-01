@@ -8,9 +8,21 @@ public partial class CoursePage : ContentPage
 {
     public ICommand DeleteStudentEnrollmentCommand { get; }
     
+    public ICommand EditModuleNameCommand { get; }
+    public ICommand DeleteModuleCommand { get; }
+    
+    public ICommand CreateContentItemCommand { get; }
+    public ICommand DeleteContentItemCommand { get; }
+    
     public CoursePage(Guid courseId, Guid? studentId = null)
     {
         DeleteStudentEnrollmentCommand = new Command<Student>(DeleteStudentEnrollment);
+        
+        EditModuleNameCommand = new Command<ModuleViewModel>(EditModuleName);
+        DeleteModuleCommand = new Command<ModuleViewModel>(DeleteModule);
+        
+        CreateContentItemCommand = new Command<ModuleViewModel>(CreateContentItem);
+        DeleteContentItemCommand = new Command<ContentItem>(DeleteContentItem);
         
         InitializeComponent();
         BindingContext = new CoursePageViewModel(courseId, studentId);
@@ -45,5 +57,63 @@ public partial class CoursePage : ContentPage
     private async void EnrollStudents_OnClicked(object? sender, EventArgs e)
     {
         await Shell.Current.Navigation.PushAsync(new EnrollStudentsPage(((CoursePageViewModel)BindingContext).CourseId));
+    }
+
+    private async void CreateModule_OnClicked(object? sender, EventArgs e)
+    {
+        var name = await DisplayPromptAsync("Create Module", "Enter the name of the module.", "Save");
+        
+        if (!string.IsNullOrWhiteSpace(name))
+        {
+            await ((CoursePageViewModel)BindingContext).CreateModuleAsync(name);
+        }
+    }
+
+    private async void EditModuleName(ModuleViewModel module)
+    {
+        var name = await DisplayPromptAsync("Edit Module", "Enter the new name of the module.", "Save", initialValue: module.Name);
+        
+        if (!string.IsNullOrWhiteSpace(name))
+        {
+            await ((CoursePageViewModel)BindingContext).UpdateModuleNameAsync(module, name);
+        }
+    }
+
+    private async void DeleteModule(ModuleViewModel module)
+    {
+        var result = await DisplayAlert(
+            "Delete Module",
+            $"Are you sure you want to delete\n{module.Name}?\nThis action cannot be undone.",
+            "Yes", "No"
+        );
+
+        if (result)
+        {
+            await ((CoursePageViewModel)BindingContext).DeleteModuleAsync(module);
+        }
+    }
+    
+    private async void CreateContentItem(ModuleViewModel module)
+    {
+        var contentItem = await ((CoursePageViewModel)BindingContext).CreateContentItemAsync(module);
+        
+        // if (contentItem is not null)
+        // {
+        //     await Shell.Current.Navigation.PushAsync(new EditContentItemPage(contentItem.Id));
+        // }
+    }
+
+    private async void DeleteContentItem(ContentItem contentItem)
+    {
+        var result = await DisplayAlert(
+            "Delete Content Item",
+            $"Are you sure you want to delete\n{contentItem.Name}?\nThis action cannot be undone.",
+            "Yes", "No"
+        );
+
+        if (result)
+        {
+            await ((CoursePageViewModel)BindingContext).DeleteContentItemAsync(contentItem);
+        }
     }
 }

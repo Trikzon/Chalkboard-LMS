@@ -7,9 +7,3 @@ public record CreateModuleRequest(
 public record UpdateModuleRequest(
     string Name
 );
-
-public record ModuleResponse(
-    Guid Id,
-    Guid CourseId,
-    string Name
-);
