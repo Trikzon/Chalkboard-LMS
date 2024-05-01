@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:Lms.Library.Models;assembly=Lms.Library"
+             xmlns:views="clr-namespace:Lms.FrontEnd.Maui.Views"
+             xmlns:viewModels="clr-namespace:Lms.FrontEnd.Maui.ViewModels"
+             x:Class="Lms.FrontEnd.Maui.Views.EditStudentPage"
+             x:DataType="viewModels:EditStudentPageViewModel"
+             Title="{Binding Name}">
+    <ContentPage.Content>
+        <Grid ColumnDefinitions="4*, 5*, 4*">
+            <VerticalStackLayout Spacing="8"
+                                 Grid.Column="1">
+                    <Label VerticalOptions="Center"
+                           Margin="0, 16, 0, 0">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Name: " FontAttributes="Bold"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Entry Text="{Binding Name, Mode=TwoWay}"/>
+                    <Label VerticalOptions="Center"
+                           Margin="0, 16, 0, 0">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Classification: " FontAttributes="Bold"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Picker x:Name="ClassificationPicker"
+                            SelectedItem="{Binding Classification, Mode=TwoWay}"/>
+            </VerticalStackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

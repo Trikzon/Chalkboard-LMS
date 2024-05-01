@@ -26,10 +26,16 @@
                                         SelectionMode="Multiple">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate x:DataType="models:Student">
-                                    <Label Text="{Binding Name}"
-                                           VerticalTextAlignment="Center"
+                                    <Label VerticalOptions="Center"
                                            Margin="0, 8"
-                                           FontSize="24"/>
+                                           FontSize="24">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Name}"/>
+                                                <Span Text="{Binding Classification, StringFormat=' ({0})'}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>

@@ -79,11 +79,17 @@
                             <ScrollView>
                                 <CollectionView ItemsSource="{Binding Roster}">
                                     <CollectionView.ItemTemplate>
-                                        <DataTemplate>
+                                        <DataTemplate x:DataType="models:Student">
                                             <Grid ColumnDefinitions="*, Auto"
                                                   Margin="0, 4">
-                                                <Label Text="{Binding Name}"
-                                                       VerticalOptions="Center"/>
+                                                <Label VerticalOptions="Center">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="{Binding Name}"/>
+                                                            <Span Text="{Binding Classification, StringFormat=' ({0})'}"/>
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
                                                 <Button Text="Remove ✕"
                                                         Padding="8, 4"
                                                         VerticalOptions="Center"

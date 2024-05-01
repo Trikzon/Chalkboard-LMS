@@ -36,7 +36,7 @@ public sealed class EnrollStudentsPageViewModel : INotifyPropertyChanged
         });
     }
     
-    public async Task EnrollStudents()
+    public async Task EnrollStudentsAsync()
     {
         foreach (var student in SelectedStudents.Cast<Student>())
         {

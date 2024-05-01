@@ -12,10 +12,10 @@ public sealed class InstructorPageViewModel : INotifyPropertyChanged
     
     public InstructorPageViewModel()
     {
-        Task.Run(Update);
+        Task.Run(UpdateAsync);
     }
 
-    public async Task Update()
+    public async Task UpdateAsync()
     {
         Courses = await CourseService.Current.GetCoursesAsync();
         OnPropertyChanged(nameof(Courses));
@@ -23,28 +23,28 @@ public sealed class InstructorPageViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(Students));
     }
     
-    public async Task CreateCourse()
+    public async Task CreateCourseAsync()
     {
         await CourseService.Current.CreateCourseAsync("New Course", "NEW");
-        await Update();
+        await UpdateAsync();
     }
     
-    public async Task DeleteCourse(Course course)
+    public async Task DeleteCourseAsync(Course course)
     {
         await CourseService.Current.DeleteCourseAsync(course.Id);
-        await Update();
+        await UpdateAsync();
     }
 
-    public async Task CreateStudent()
+    public async Task CreateStudentAsync()
     {
         await StudentService.Current.CreateStudentAsync("New Student", Classification.Freshman);
-        await Update();
+        await UpdateAsync();
     }
     
-    public async Task DeleteStudent(Student student)
+    public async Task DeleteStudentAsync(Student student)
     {
         await StudentService.Current.DeleteStudentAsync(student.Id);
-        await Update();
+        await UpdateAsync();
     }
     
     public event PropertyChangedEventHandler? PropertyChanged;

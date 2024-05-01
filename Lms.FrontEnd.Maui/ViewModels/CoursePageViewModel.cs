@@ -60,24 +60,24 @@ public sealed class CoursePageViewModel : INotifyPropertyChanged
             }
         });
 
-        Task.Run(Update);
+        Task.Run(UpdateAsync);
     }
     
-    public async Task Update()
+    public async Task UpdateAsync()
     {
         Roster = await CourseService.Current.GetEnrolledStudentsAsync(CourseId);
         OnPropertyChanged(nameof(Roster));
     }
     
-    public async Task Save()
+    public async Task SaveChangesAsync()
     {
         await CourseService.Current.UpdateCourseAsync(CourseId, Name, Code, Description);
     }
     
-    public async Task DeleteStudentEnrollment(Student student)
+    public async Task DeleteStudentEnrollmentAsync(Student student)
     {
         await CourseService.Current.DeleteEnrollmentAsync(CourseId, student.Id);
-        await Update();
+        await UpdateAsync();
     }
     
     public event PropertyChangedEventHandler? PropertyChanged;

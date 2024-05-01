@@ -31,8 +31,14 @@
                                     <Grid ColumnDefinitions="*, Auto, Auto"
                                           ColumnSpacing="8"
                                           Margin="0, 4">
-                                        <Label Text="{Binding Name}"
-                                               VerticalOptions="Center"/>
+                                        <Label VerticalOptions="Center">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding Name}"/>
+                                                    <Span Text="{Binding Code, StringFormat=' ({0})'}"/>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
                                         <Button Text="Edit ✎"
                                                 Padding="8, 4"
                                                 VerticalOptions="Center"
@@ -77,8 +83,14 @@
                                     <Grid ColumnDefinitions="*, Auto, Auto"
                                           ColumnSpacing="8"
                                           Margin="0, 4">
-                                        <Label Text="{Binding Name}"
-                                               VerticalOptions="Center"/>
+                                        <Label VerticalOptions="Center">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding Name}"/>
+                                                    <Span Text="{Binding Classification, StringFormat=' ({0})'}"/>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
                                         <Button Text="Edit ✎"
                                                 Padding="8, 4"
                                                 VerticalOptions="Center"

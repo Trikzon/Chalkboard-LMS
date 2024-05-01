@@ -12,7 +12,7 @@ public partial class EnrollStudentsPage : ContentPage
 
     private async void EnrollStudents_OnPressed(object? sender, EventArgs e)
     {
-        await ((EnrollStudentsPageViewModel)BindingContext).EnrollStudents();
+        await ((EnrollStudentsPageViewModel)BindingContext).EnrollStudentsAsync();
         
         await Shell.Current.Navigation.PopAsync();
     }

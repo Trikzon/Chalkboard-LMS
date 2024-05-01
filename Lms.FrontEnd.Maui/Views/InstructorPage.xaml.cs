@@ -25,12 +25,12 @@ public partial class InstructorPage : ContentPage
     protected override async void OnNavigatedTo(NavigatedToEventArgs args)
     {
         base.OnNavigatedTo(args);
-        await ((InstructorPageViewModel)BindingContext).Update();
+        await ((InstructorPageViewModel)BindingContext).UpdateAsync();
     }
 
     private async void AddCourse_OnClicked(object? sender, EventArgs e)
     {
-        await ((InstructorPageViewModel)BindingContext).CreateCourse();
+        await ((InstructorPageViewModel)BindingContext).CreateCourseAsync();
     }
     
     private async void EditCourse(Course course)
@@ -48,18 +48,18 @@ public partial class InstructorPage : ContentPage
         
         if (result)
         {
-            await ((InstructorPageViewModel)BindingContext).DeleteCourse(course);
+            await ((InstructorPageViewModel)BindingContext).DeleteCourseAsync(course);
         }
     }
     
     private async void AddStudent_OnClicked(object? sender, EventArgs e)
     {
-        await ((InstructorPageViewModel)BindingContext).CreateStudent();
+        await ((InstructorPageViewModel)BindingContext).CreateStudentAsync();
     }
     
     private async void EditStudent(Student student)
     {
-        // await Shell.Current.Navigation.PushAsync(new StudentPage(student.Id));
+        await Shell.Current.Navigation.PushAsync(new EditStudentPage(student.Id));
     }
     
     private async void DeleteStudent(Student student)
@@ -72,7 +72,7 @@ public partial class InstructorPage : ContentPage
         
         if (result)
         {
-            await ((InstructorPageViewModel)BindingContext).DeleteStudent(student);
+            await ((InstructorPageViewModel)BindingContext).DeleteStudentAsync(student);
         }
     }
 }

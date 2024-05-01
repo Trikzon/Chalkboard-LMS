@@ -19,18 +19,18 @@ public partial class CoursePage : ContentPage
     protected override async void OnNavigatedTo(NavigatedToEventArgs args)
     {
         base.OnNavigatedTo(args);
-        await ((CoursePageViewModel)BindingContext).Update();
+        await ((CoursePageViewModel)BindingContext).UpdateAsync();
     }
 
     protected override async void OnNavigatingFrom(NavigatingFromEventArgs args)
     {
         base.OnNavigatingFrom(args);
-        await ((CoursePageViewModel)BindingContext).Save();
+        await ((CoursePageViewModel)BindingContext).SaveChangesAsync();
     }
     
     private async void DeleteStudentEnrollment(Student student)
     {
-        await ((CoursePageViewModel)BindingContext).DeleteStudentEnrollment(student);
+        await ((CoursePageViewModel)BindingContext).DeleteStudentEnrollmentAsync(student);
     }
 
     private async void EnrollStudents_OnClicked(object? sender, EventArgs e)
