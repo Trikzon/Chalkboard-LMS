@@ -8,17 +8,36 @@ namespace Lms.FrontEnd.Maui.ViewModels;
 
 public sealed class StudentPageViewModel : INotifyPropertyChanged
 {
+    private IEnumerable<Course>? _enrolledCourses;
+    private string _searchQuery = "";
+
     public Guid StudentId { get; }
 
     public string Name { get; private set; } = "";
 
-    public IEnumerable<Course>? EnrolledCourses { get; private set; }
-    
+    public IEnumerable<Course>? EnrolledCourses
+    {
+        get => _enrolledCourses?.Where(s => s.Name.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase));
+        private set => _enrolledCourses = value;
+    }
+
     public Course? SelectedCourse { get; set; }
     
     public bool IsCourseSelected => SelectedCourse != null;
     
     public ICommand SelectionChangedCommand => new Command(() => OnPropertyChanged(nameof(IsCourseSelected)));
+    
+    public string SearchQuery
+    {
+        get => _searchQuery;
+        set
+        {
+            _searchQuery = value;
+            SelectedCourse = null;
+            OnPropertyChanged(nameof(EnrolledCourses));
+            OnPropertyChanged(nameof(IsCourseSelected));
+        }
+    }
     
     public StudentPageViewModel(Guid studentId)
     {

@@ -7,9 +7,43 @@ namespace Lms.FrontEnd.Maui.ViewModels;
 
 public sealed class InstructorPageViewModel : INotifyPropertyChanged
 {
-    public IEnumerable<Course>? Courses { get; private set; }
-    public IEnumerable<Student>? Students { get; private set; }
-    
+    private string _courseSearchQuery = "";
+    private IEnumerable<Student>? _students;
+    private string _studentSearchQuery = "";
+    private IEnumerable<Course>? _courses;
+
+    public IEnumerable<Course>? Courses
+    {
+        get => _courses?.Where(c => c.Name.Contains(CourseSearchQuery, StringComparison.OrdinalIgnoreCase));
+        private set => _courses = value;
+    }
+
+    public IEnumerable<Student>? Students
+    {
+        get => _students?.Where(s => s.Name.Contains(StudentSearchQuery, StringComparison.OrdinalIgnoreCase));
+        private set => _students = value;
+    }
+
+    public string CourseSearchQuery
+    {
+        get => _courseSearchQuery;
+        set
+        {
+            _courseSearchQuery = value;
+            OnPropertyChanged(nameof(Courses));
+        }
+    }
+
+    public string StudentSearchQuery
+    {
+        get => _studentSearchQuery;
+        set
+        {
+            _studentSearchQuery = value;
+            OnPropertyChanged(nameof(Students));
+        }
+    }
+
     public InstructorPageViewModel()
     {
         Task.Run(UpdateAsync);
@@ -23,10 +57,13 @@ public sealed class InstructorPageViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(Students));
     }
     
-    public async Task CreateCourseAsync()
+    public async Task<Course?> CreateCourseAsync()
     {
-        await CourseService.Current.CreateCourseAsync("New Course", "NEW");
+        var course = await CourseService.Current.CreateCourseAsync("New Course", "NEW");
+        
         await UpdateAsync();
+        
+        return course;
     }
     
     public async Task DeleteCourseAsync(Course course)
@@ -35,10 +72,13 @@ public sealed class InstructorPageViewModel : INotifyPropertyChanged
         await UpdateAsync();
     }
 
-    public async Task CreateStudentAsync()
+    public async Task<Student?> CreateStudentAsync()
     {
-        await StudentService.Current.CreateStudentAsync("New Student", Classification.Freshman);
+        var student = await StudentService.Current.CreateStudentAsync("New Student", Classification.Freshman);
+        
         await UpdateAsync();
+        
+        return student;
     }
     
     public async Task DeleteStudentAsync(Student student)

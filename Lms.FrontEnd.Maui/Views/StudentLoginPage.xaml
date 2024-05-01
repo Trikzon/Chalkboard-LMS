@@ -16,7 +16,8 @@
                   Grid.Column="1">
                 <Entry Placeholder="Search"
                        ClearButtonVisibility="WhileEditing"
-                       IsSpellCheckEnabled="False"/>
+                       IsSpellCheckEnabled="False"
+                       Text="{Binding SearchQuery, Mode=TwoWay}"/>
                 <Border Padding="8"
                         Grid.Row="1">
                     <ScrollView>

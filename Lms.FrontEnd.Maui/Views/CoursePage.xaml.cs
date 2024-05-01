@@ -30,7 +30,16 @@ public partial class CoursePage : ContentPage
     
     private async void DeleteStudentEnrollment(Student student)
     {
-        await ((CoursePageViewModel)BindingContext).DeleteStudentEnrollmentAsync(student);
+        var result = await DisplayAlert(
+            "Remove Student Enrollment",
+            $"Are you sure you want to remove\n{student.Name}?",
+            "Yes", "No"
+        );
+
+        if (result)
+        {
+            await ((CoursePageViewModel)BindingContext).DeleteStudentEnrollmentAsync(student);
+        }
     }
 
     private async void EnrollStudents_OnClicked(object? sender, EventArgs e)

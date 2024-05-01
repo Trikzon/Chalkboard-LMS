@@ -30,7 +30,12 @@ public partial class InstructorPage : ContentPage
 
     private async void AddCourse_OnClicked(object? sender, EventArgs e)
     {
-        await ((InstructorPageViewModel)BindingContext).CreateCourseAsync();
+        var course = await ((InstructorPageViewModel)BindingContext).CreateCourseAsync();
+        
+        if (course is not null)
+        {
+            await Shell.Current.Navigation.PushAsync(new CoursePage(course.Id));
+        }
     }
     
     private async void EditCourse(Course course)
@@ -54,7 +59,12 @@ public partial class InstructorPage : ContentPage
     
     private async void AddStudent_OnClicked(object? sender, EventArgs e)
     {
-        await ((InstructorPageViewModel)BindingContext).CreateStudentAsync();
+        var student = await ((InstructorPageViewModel)BindingContext).CreateStudentAsync();
+        
+        if (student is not null)
+        {
+            await Shell.Current.Navigation.PushAsync(new EditStudentPage(student.Id));
+        }
     }
     
     private async void EditStudent(Student student)

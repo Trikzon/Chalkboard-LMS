@@ -21,6 +21,7 @@
                 <Entry Placeholder="Search"
                        ClearButtonVisibility="WhileEditing"
                        IsSpellCheckEnabled="False"
+                       Text="{Binding CourseSearchQuery, Mode=TwoWay}"
                        Grid.Row="1"/>
                 <Border Grid.Row="2"
                         Padding="8">
@@ -73,6 +74,7 @@
                 <Entry Placeholder="Search"
                        ClearButtonVisibility="WhileEditing"
                        IsSpellCheckEnabled="False"
+                       Text="{Binding StudentSearchQuery, Mode=TwoWay}"
                        Grid.Row="1"/>
                 <Border Grid.Row="2"
                         Padding="8">

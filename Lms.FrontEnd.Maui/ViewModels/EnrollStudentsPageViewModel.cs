@@ -10,14 +10,31 @@ public sealed class EnrollStudentsPageViewModel : INotifyPropertyChanged
 {
     private readonly Guid _courseId;
     private IEnumerable<Student>? _notEnrolledStudents;
-    
-    public IEnumerable<Student>? NotEnrolledStudents => _notEnrolledStudents;
+    private string _searchQuery = "";
 
-    public IList<Object> SelectedStudents { get; } = [];
+    public IEnumerable<Student>? NotEnrolledStudents
+    {
+        get => _notEnrolledStudents?.Where(c => c.Name.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase));
+        private set => _notEnrolledStudents = value;
+    }
+
+    public IList<object> SelectedStudents { get; } = [];
     
     public bool HasSelectedStudents => SelectedStudents.Any();
     
     public ICommand SelectionChangedCommand => new Command(() => OnPropertyChanged(nameof(HasSelectedStudents)));
+
+    public string SearchQuery
+    {
+        get => _searchQuery;
+        set
+        {
+            _searchQuery = value;
+            SelectedStudents.Clear();
+            OnPropertyChanged(nameof(HasSelectedStudents));
+            OnPropertyChanged(nameof(NotEnrolledStudents));
+        }
+    }
 
     public EnrollStudentsPageViewModel(Guid courseId)
     {
@@ -30,7 +47,7 @@ public sealed class EnrollStudentsPageViewModel : INotifyPropertyChanged
             
             if (enrolledStudents != null)
             {
-                _notEnrolledStudents = students?.Except(enrolledStudents);
+                NotEnrolledStudents = students?.Except(enrolledStudents);
                 OnPropertyChanged(nameof(NotEnrolledStudents));
             }
         });
