@@ -111,6 +111,13 @@ public sealed class CoursePageViewModel : INotifyPropertyChanged
         return contentItem;
     }
     
+    public async Task<Assignment?> CreateAssignmentAsync(ModuleViewModel module)
+    {
+        var assignment = await ModuleService.Current.CreateAssignmentAsync(module.ModuleId, "New Assignment", "", 0, DateTime.Now);
+        await UpdateAsync();
+        return assignment;
+    }
+    
     public async Task DeleteContentItemAsync(ContentItemViewModel contentItem)
     {
         await ContentItemService.Current.DeleteContentItemAsync(contentItem.ContentItemId);

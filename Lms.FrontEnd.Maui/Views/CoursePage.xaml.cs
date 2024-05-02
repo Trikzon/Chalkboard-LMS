@@ -12,6 +12,7 @@ public partial class CoursePage : ContentPage
     public ICommand DeleteModuleCommand { get; }
     
     public ICommand CreateContentItemCommand { get; }
+    public ICommand CreateAssignmentCommand { get; }
     public ICommand EditContentItemCommand { get; }
     public ICommand DeleteContentItemCommand { get; }
     
@@ -23,6 +24,7 @@ public partial class CoursePage : ContentPage
         DeleteModuleCommand = new Command<ModuleViewModel>(DeleteModule);
         
         CreateContentItemCommand = new Command<ModuleViewModel>(CreateContentItem);
+        CreateAssignmentCommand = new Command<ModuleViewModel>(CreateAssignment);
         EditContentItemCommand = new Command<ContentItemViewModel>(EditContentItem);
         DeleteContentItemCommand = new Command<ContentItemViewModel>(DeleteContentItem);
         
@@ -102,6 +104,16 @@ public partial class CoursePage : ContentPage
         if (contentItem is not null)
         {
             await Shell.Current.Navigation.PushAsync(new ContentItemPage(contentItem.Id, module.ModuleId));
+        }
+    }
+    
+    private async void CreateAssignment(ModuleViewModel module)
+    {
+        var assignment = await ((CoursePageViewModel)BindingContext).CreateAssignmentAsync(module);
+        
+        if (assignment is not null)
+        {
+            await Shell.Current.Navigation.PushAsync(new AssignmentPage(assignment.Id, module.ModuleId));
         }
     }
     

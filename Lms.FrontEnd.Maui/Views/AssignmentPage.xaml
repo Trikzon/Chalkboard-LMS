@@ -8,7 +8,7 @@
              xmlns:viewModels="clr-namespace:Lms.FrontEnd.Maui.ViewModels"
              x:Class="Lms.FrontEnd.Maui.Views.AssignmentPage"
              x:DataType="viewModels:AssignmentPageViewModel"
-             Title="{Binding Name, StringFormat='Assignment {0}'}">
+             Title="{Binding Name}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
@@ -69,6 +69,112 @@
                     <ScrollView>
                         <Editor Text="{Binding Content, Mode=TwoWay}"
                                 IsReadOnly="{Binding IsInstructor, Converter={StaticResource InvertedBoolConverter}}"/>
+                    </ScrollView>
+                </Border>
+            </Grid>
+            
+            <Grid RowDefinitions="Auto, Auto, Auto, Auto, *, Auto"
+                  RowSpacing="8"
+                  IsVisible="{Binding IsInstructor, Converter={StaticResource InvertedBoolConverter}}"
+                  Grid.Column="3">
+                <Label Text="Submission"
+                       FontSize="36"
+                       HorizontalTextAlignment="Center"
+                       Margin="0, 0, 0, 16"
+                       TextDecorations="Underline"/>
+                <Label VerticalOptions="Center"
+                       Margin="0, 16, 0, 0"
+                       IsVisible="{Binding IsSubmitted}"
+                       Grid.Row="1">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Submission Date" FontAttributes="Bold"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <DatePicker Date="{Binding SubmissionDate, Mode=TwoWay}"
+                            IsEnabled="False"
+                            IsVisible="{Binding IsSubmitted}"
+                            Grid.Row="2"/>
+                <Label VerticalOptions="Center"
+                       IsVisible="{Binding IsGraded}"
+                       Grid.Row="3">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Score: " FontAttributes="Bold"/>
+                            <Span Text="{Binding Score, StringFormat=' ({0}/'}"/>
+                            <Span Text="{Binding TotalAvailablePoints, StringFormat='{0})'}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label VerticalOptions="Center"
+                       IsVisible="{Binding IsGraded, Converter={StaticResource InvertedBoolConverter}}"
+                       Grid.Row="3">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Score: " FontAttributes="Bold"/>
+                            <Span Text=" (Ungraded)"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Border Padding="8"
+                        Grid.Row="4">
+                    <ScrollView>
+                        <Editor Text="{Binding SubmissionContent, Mode=TwoWay}"
+                                IsReadOnly="{Binding IsSubmitted}"/>
+                    </ScrollView>
+                </Border>
+                <Button Text="Submit Assignment"
+                        Margin="16"
+                        Pressed="SubmitAssignment_OnPressed"
+                        IsEnabled="{Binding IsSubmitted, Converter={StaticResource InvertedBoolConverter}}"
+                        Grid.Row="5"/>
+            </Grid>
+            
+            <Grid RowDefinitions="Auto, *"
+                  RowSpacing="8"
+                  IsVisible="{Binding IsInstructor}"
+                  Grid.Column="3">
+                <Label Text="Submissions"
+                       FontSize="36"
+                       HorizontalTextAlignment="Center"
+                       Margin="0, 0, 0, 16"
+                       TextDecorations="Underline"/>
+                <Border Padding="8"
+                        Grid.Row="3">
+                    <ScrollView>
+                        <CollectionView ItemsSource="{Binding Submissions}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="viewModels:SubmissionViewModel">
+                                    <Grid ColumnDefinitions="*, Auto">
+                                        <Label VerticalOptions="Center"
+                                               IsVisible="{Binding IsGraded, Converter={StaticResource InvertedBoolConverter}}">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding StudentName}"/>
+                                                    <Span Text=" (Not Graded)"/>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        <Label VerticalOptions="Center"
+                                               IsVisible="{Binding IsGraded}">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding StudentName}"/>
+                                                    <Span Text="{Binding Score, StringFormat=' ({0}/'}"/>
+                                                    <Span Text="{Binding TotalAvailablePoints, StringFormat='{0})'}"/>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        <Button Text="Grade"
+                                                Command="{Binding Path=OpenGradeAssignmentCommand, Source={RelativeSource AncestorType={x:Type views:AssignmentPage}}}"
+                                                CommandParameter="{Binding}"
+                                                IsEnabled="{Binding IsGraded, Converter={StaticResource InvertedBoolConverter}}"
+                                                Grid.Column="1"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
                     </ScrollView>
                 </Border>
             </Grid>

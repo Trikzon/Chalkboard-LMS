@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:models="clr-namespace:Lms.Library.Models;assembly=Lms.Library"
+             xmlns:views="clr-namespace:Lms.FrontEnd.Maui.Views"
+             xmlns:viewModels="clr-namespace:Lms.FrontEnd.Maui.ViewModels"
+             x:Class="Lms.FrontEnd.Maui.Views.GradeAssignmentPage"
+             x:DataType="viewModels:SubmissionViewModel"
+             Title="{Binding StudentName, StringFormat='{0}\'s Submission'}">
+    <ContentPage.Content>
+        <Grid ColumnDefinitions="4*, 5*, 4*">
+            <Grid RowDefinitions="Auto, Auto, Auto, *, Auto, Auto"
+                  RowSpacing="8"
+                  Grid.Column="1">
+                <Label Text="{Binding StudentName, StringFormat='{0}\'s Submission'}"
+                       FontSize="36"
+                       HorizontalTextAlignment="Center"
+                       Margin="0, 0, 0, 16"
+                       TextDecorations="Underline"/>
+                <Label VerticalOptions="Center"
+                       Margin="0, 16, 0, 0"
+                       Grid.Row="1">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Submission Date:" FontAttributes="Bold"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <DatePicker Date="{Binding SubmissionDate, Mode=TwoWay}"
+                            IsEnabled="False"
+                            Grid.Row="2"/>
+                <Border Padding="8"
+                        Grid.Row="3">
+                    <ScrollView>
+                        <Editor Text="{Binding SubmissionContent, Mode=TwoWay}"
+                                IsReadOnly="True"/>
+                    </ScrollView>
+                </Border>
+                <Label VerticalOptions="Center"
+                       Margin="0, 16, 0, 0"
+                       Grid.Row="4">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Grade:" FontAttributes="Bold"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Entry Text="{Binding Score, Mode=TwoWay}"
+                       Grid.Row="5"/>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

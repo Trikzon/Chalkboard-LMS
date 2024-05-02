@@ -68,6 +68,31 @@ public class SubmissionService(IConfiguration configuration)
         );
     }
     
+    public IEnumerable<Submission> GetSubmissions(Guid contentItemId)
+    {
+        using var connection = new MySqlConnection(_connectionString);
+        connection.Open();
+
+        const string query = "SELECT student_id, content, submission_date, points FROM submissions WHERE content_item_id = @content_item_id";
+        using var command = new MySqlCommand(query, connection);
+        command.Parameters.AddWithValue("@content_item_id", contentItemId);
+        
+        using var reader = command.ExecuteReader();
+        var submissions = new List<Submission>();
+        while (reader.Read())
+        {
+            submissions.Add(new Submission(
+                contentItemId,
+                reader.GetGuid("student_id"),
+                reader.GetString("content"),
+                reader.GetDateTime("submission_date"),
+                reader.GetFloat("points")
+            ));
+        }
+
+        return submissions;
+    }
+    
     public bool UpdateSubmission(Submission submission)
     {
         using var connection = new MySqlConnection(_connectionString);

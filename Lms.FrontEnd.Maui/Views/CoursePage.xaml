@@ -147,6 +147,8 @@
                                                 <Button Text="Create Assignment"
                                                         Padding="8, 4"
                                                         VerticalOptions="Center"
+                                                        Command="{Binding Path=CreateAssignmentCommand, Source={RelativeSource AncestorType={x:Type views:CoursePage}}}"
+                                                        CommandParameter="{Binding}"
                                                         IsVisible="{Binding IsInstructor, Source={RelativeSource AncestorType={x:Type viewModels:CoursePageViewModel}}}"
                                                         Grid.Column="2"/>
                                                 <Button Text="Edit ✎"

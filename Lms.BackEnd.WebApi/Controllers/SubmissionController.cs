@@ -21,8 +21,14 @@ public class SubmissionController(SubmissionService service) : ControllerBase
             actionName: nameof(GetSubmission),
             controllerName: "Submission",
             routeValues: new { contentItemId, studentId },
-            value: new SubmissionResponse(submission.ContentItemId, submission.StudentId, submission.Content, submission.SubmissionDate, submission.Points)
+            value: submission
         );
+    }
+    
+    [HttpGet("/submissions/{contentItemId:guid}")]
+    public IActionResult GetSubmissions(Guid contentItemId)
+    {
+        return Ok(service.GetSubmissions(contentItemId));
     }
     
     [HttpGet("/submissions/{contentItemId:guid}/{studentId:guid}")]
@@ -34,7 +40,7 @@ public class SubmissionController(SubmissionService service) : ControllerBase
             return NotFound();
         }
 
-        return Ok(new SubmissionResponse(submission.ContentItemId, submission.StudentId, submission.Content, submission.SubmissionDate, submission.Points));
+        return Ok(submission);
     }
     
     [HttpPut("/submissions/{contentItemId:guid}/{studentId:guid}")]
@@ -46,7 +52,7 @@ public class SubmissionController(SubmissionService service) : ControllerBase
             return NotFound();
         }
 
-        return Ok(new SubmissionResponse(submission.ContentItemId, submission.StudentId, submission.Content, submission.SubmissionDate, submission.Points));
+        return Ok(submission);
     }
     
     [HttpDelete("/submissions/{contentItemId:guid}/{studentId:guid}")]
