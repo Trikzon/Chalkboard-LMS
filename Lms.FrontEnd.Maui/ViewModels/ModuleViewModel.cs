@@ -11,7 +11,7 @@ public sealed class ModuleViewModel : INotifyPropertyChanged
     
     public string Name { get; set; } = "";
     
-    public IEnumerable<ContentItem>? ContentItems { get; private set; }
+    public IEnumerable<ContentItemViewModel>? ContentItems { get; private set; }
     
     public ModuleViewModel(Guid moduleId)
     {
@@ -26,13 +26,14 @@ public sealed class ModuleViewModel : INotifyPropertyChanged
                 OnPropertyChanged(nameof(Name));
             }
         });
-
+        
         Task.Run(UpdateAsync);
     }
 
     private async Task UpdateAsync()
     {
-        ContentItems = await ModuleService.Current.GetContentItemsAsync(ModuleId);
+        ContentItems = (await ModuleService.Current.GetContentItemsAsync(ModuleId) ?? [])
+            .Select(c => new ContentItemViewModel(c.Id, ModuleId));
         OnPropertyChanged(nameof(ContentItems));
     }
 

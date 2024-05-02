@@ -111,8 +111,8 @@ public class ContentItemController(ContentItemService service) : ControllerBase
     public IActionResult UpdateAssignment(Guid moduleId, Guid contentItemId, UpdateAssignmentRequest request)
     {
         var assignment = new Assignment(contentItemId, moduleId, request.Name, request.Content, request.TotalAvailablePoints, request.DueDate);
-        
-        var existingAssignment = service.GetContentItem(contentItemId) as Assignment;
+
+        var existingAssignment = service.GetAssignment(contentItemId);
         if (existingAssignment is null || existingAssignment.ModuleId != moduleId)
         {
             return BadRequest();

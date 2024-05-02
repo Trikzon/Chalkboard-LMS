@@ -51,4 +51,17 @@ public class ContentItemService
             ApiUtils.HandleApiException(exception);
         }
     }
+    
+    public async Task<Assignment?> GetAssignmentAsync(Guid contentItemId)
+    {
+        try
+        {
+            return await _api.GetAssignmentAsync(contentItemId);
+        }
+        catch (ApiException exception)
+        {
+            ApiUtils.HandleApiException(exception);
+            return null;
+        }
+    }
 }

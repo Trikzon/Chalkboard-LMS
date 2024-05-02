@@ -12,6 +12,6 @@ public record Assignment(
     Guid ModuleId,
     string Name,
     string? Content,
-    double TotalAvailablePoints,
+    int TotalAvailablePoints,
     DateTime DueDate
 ) : ContentItem(Id, ModuleId, Name, Content);

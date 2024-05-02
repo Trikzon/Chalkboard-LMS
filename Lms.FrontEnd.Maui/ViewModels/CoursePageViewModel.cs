@@ -111,9 +111,9 @@ public sealed class CoursePageViewModel : INotifyPropertyChanged
         return contentItem;
     }
     
-    public async Task DeleteContentItemAsync(ContentItem contentItem)
+    public async Task DeleteContentItemAsync(ContentItemViewModel contentItem)
     {
-        await ContentItemService.Current.DeleteContentItemAsync(contentItem.Id);
+        await ContentItemService.Current.DeleteContentItemAsync(contentItem.ContentItemId);
         await UpdateAsync();
     }
     

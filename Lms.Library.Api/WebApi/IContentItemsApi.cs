@@ -10,4 +10,7 @@ public interface IContentItemsApi
     
     [Delete("/content-items/{contentItemId}")]
     Task DeleteContentItemAsync(Guid contentItemId);
+    
+    [Get("/assignments/{contentItemId}")]
+    Task<Assignment?> GetAssignmentAsync(Guid contentItemId);
 }

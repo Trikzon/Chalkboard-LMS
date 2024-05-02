@@ -8,7 +8,7 @@ public record CreateContentItemRequest(
 public record CreateAssignmentRequest(
     string Name,
     string? Content,
-    double TotalAvailablePoints,
+    int TotalAvailablePoints,
     DateTime DueDate
 ) : CreateContentItemRequest(Name, Content);
 
@@ -20,6 +20,6 @@ public record UpdateContentItemRequest(
 public record UpdateAssignmentRequest(
     string Name,
     string? Content,
-    double TotalAvailablePoints,
+    int TotalAvailablePoints,
     DateTime DueDate
 ) : UpdateContentItemRequest(Name, Content);

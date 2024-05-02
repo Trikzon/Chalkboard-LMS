@@ -91,6 +91,19 @@ public class ModuleService
         }
     }
     
+    public async Task<Assignment?> CreateAssignmentAsync(Guid moduleId, string name, string content, int totalAvailablePoints, DateTime dueDate)
+    {
+        try
+        {
+            return await _api.CreateAssignmentAsync(moduleId, new CreateAssignmentRequest(name, content, totalAvailablePoints, dueDate));
+        }
+        catch (ApiException exception)
+        {
+            ApiUtils.HandleApiException(exception);
+            return null;
+        }
+    }
+    
     public async Task<IEnumerable<Assignment>?> GetAssignmentsAsync(Guid moduleId)
     {
         try
@@ -101,6 +114,18 @@ public class ModuleService
         {
             ApiUtils.HandleApiException(exception);
             return null;
+        }
+    }
+    
+    public async Task UpdateAssignmentAsync(Guid moduleId, Guid assignmentId, string name, string content, int totalAvailablePoints, DateTime dueDate)
+    {
+        try
+        {
+            await _api.UpdateAssignmentAsync(moduleId, assignmentId, new UpdateAssignmentRequest(name, content, totalAvailablePoints, dueDate));
+        }
+        catch (ApiException exception)
+        {
+            ApiUtils.HandleApiException(exception);
         }
     }
 }

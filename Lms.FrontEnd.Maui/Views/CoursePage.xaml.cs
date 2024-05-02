@@ -23,8 +23,8 @@ public partial class CoursePage : ContentPage
         DeleteModuleCommand = new Command<ModuleViewModel>(DeleteModule);
         
         CreateContentItemCommand = new Command<ModuleViewModel>(CreateContentItem);
-        EditContentItemCommand = new Command<ContentItem>(EditContentItem);
-        DeleteContentItemCommand = new Command<ContentItem>(DeleteContentItem);
+        EditContentItemCommand = new Command<ContentItemViewModel>(EditContentItem);
+        DeleteContentItemCommand = new Command<ContentItemViewModel>(DeleteContentItem);
         
         InitializeComponent();
         BindingContext = new CoursePageViewModel(courseId, studentId);
@@ -105,12 +105,15 @@ public partial class CoursePage : ContentPage
         }
     }
     
-    private async void EditContentItem(ContentItem contentItem)
+    private async void EditContentItem(ContentItemViewModel contentItem)
     {
-        await Shell.Current.Navigation.PushAsync(new ContentItemPage(contentItem.Id, contentItem.ModuleId, ((CoursePageViewModel)BindingContext).StudentId));
+        if (contentItem.IsAssignment)
+            await Shell.Current.Navigation.PushAsync(new AssignmentPage(contentItem.ContentItemId, contentItem.ModuleId, ((CoursePageViewModel)BindingContext).StudentId));
+        else
+            await Shell.Current.Navigation.PushAsync(new ContentItemPage(contentItem.ContentItemId, contentItem.ModuleId, ((CoursePageViewModel)BindingContext).StudentId));
     }
 
-    private async void DeleteContentItem(ContentItem contentItem)
+    private async void DeleteContentItem(ContentItemViewModel contentItem)
     {
         var result = await DisplayAlert(
             "Delete Content Item",

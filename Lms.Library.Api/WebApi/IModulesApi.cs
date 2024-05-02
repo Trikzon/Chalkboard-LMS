@@ -21,6 +21,12 @@ public interface IModulesApi
     [Put("/modules/{moduleId}/content-items/{contentItemId}")]
     Task UpdateContentItemAsync(Guid moduleId, Guid contentItemId, UpdateContentItemRequest request);
     
+    [Post("/modules/{moduleId}/assignments")]
+    Task<Assignment> CreateAssignmentAsync(Guid moduleId, CreateAssignmentRequest request);
+    
     [Get("/modules/{moduleId}/assignments")]
     Task<IEnumerable<Assignment>> GetAssignmentsAsync(Guid moduleId);
+    
+    [Put("/modules/{moduleId}/assignments/{contentItemId}")]
+    Task UpdateAssignmentAsync(Guid moduleId, Guid contentItemId, UpdateAssignmentRequest request);
 }

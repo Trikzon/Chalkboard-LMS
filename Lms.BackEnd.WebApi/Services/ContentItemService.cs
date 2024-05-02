@@ -84,7 +84,7 @@ public class ContentItemService(IConfiguration configuration)
         var moduleId = reader.GetGuid(0);
         var name = reader.GetString(1);
         var content = reader.IsDBNull(2) ? null : reader.GetString(2);
-        var totalAvailablePoints = reader.GetDouble(3);
+        var totalAvailablePoints = reader.GetInt32(3);
         var dueDate = reader.GetDateTime(4);
         
         return new Assignment(contentItemId, moduleId, name, content, totalAvailablePoints, dueDate);
@@ -135,7 +135,7 @@ public class ContentItemService(IConfiguration configuration)
             var id = reader.GetGuid(0);
             var name = reader.GetString(1);
             var content = reader.IsDBNull(2) ? null : reader.GetString(2);
-            var totalAvailablePoints = reader.GetDouble(3);
+            var totalAvailablePoints = reader.GetInt32(3);
             var dueDate = reader.GetDateTime(4);
             
             assignments.Add(new Assignment(id, moduleId, name, content, totalAvailablePoints, dueDate));
